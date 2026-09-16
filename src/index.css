@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply font-sans text-text-primary bg-background antialiased;
+  }
+}
+
+@layer components {
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-white font-medium py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-text-primary font-medium py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  .btn-danger {
+    @apply bg-status-broken hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  .btn-success {
+    @apply bg-status-good hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition-colors duration-200;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply bg-background-surface rounded-lg shadow-card p-4;
+  }
+
+  /* Input Styles */
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
+  }
+
+  .input-error {
+    @apply border-status-broken focus:ring-status-broken;
+  }
+
+  /* Label Styles */
+  .label {
+    @apply block text-sm font-medium text-text-primary mb-1;
+  }
+
+  /* Status Badge */
+  .badge-good {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-status-good;
+  }
+
+  .badge-broken {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-status-broken;
+  }
+
+  .badge-pending {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-status-warning;
+  }
+
+  .badge-na {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-status-na;
+  }
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    size: landscape;
+    margin: 1cm;
+  }
+  
+  body {
+    @apply text-black bg-white;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}

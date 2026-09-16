@@ -1,0 +1,389 @@
+import { useState, useEffect } from 'react';
+import { adminAPI } from '../../services/api';
+import { Link } from 'react-router-dom';
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend
+} from 'recharts';
+import {
+  InspectionIcon,
+  WarningIcon,
+  UsersIcon,
+  VehicleIcon,
+  ChevronRightIcon,
+  CheckCircleIcon,
+  ClockIcon
+} from '../../components/Icons';
+
+const Dashboard = () => {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      const response = await adminAPI.getDashboard();
+      setStats(response.data.data);
+    } catch (error) {
+      console.error('Failed to load dashboard:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-72">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1E4B8E]"></div>
+      </div>
+    );
+  }
+
+  const conditionColors = {
+    'Bagus': '#16A34A',
+    'Rusak': '#DC2626',
+    'N/A': '#9CA3AF'
+  };
+
+  return (
+    <div className="space-y-7">
+      {/* Top Welcome & Summary Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1A1A2E] dark:text-white dark:text-white tracking-tight">
+            Ringkasan Operasional Lapangan
+          </h1>
+          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-1">
+            Monitoring formulir inspeksi harian armada dan alat berat PT. BESMINDO secara real-time.
+          </p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <Link
+            to="/admin/inspections"
+            className="inline-flex items-center space-x-2 bg-[#1E4B8E] hover:bg-[#163A6E] dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
+          >
+            <InspectionIcon className="w-4 h-4" />
+            <span>Lihat Semua Inspeksi</span>
+          </Link>
+          <Link
+            to="/admin/reports"
+            className="inline-flex items-center space-x-2 bg-[#F0E5CF] hover:bg-[#e4d7be] dark:bg-gray-700 dark:hover:bg-gray-600 text-[#1E4B8E] dark:text-gray-200 border border-[#C8C6C6] dark:border-gray-600 px-4 py-2 rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
+          >
+            <span>Rekap &amp; Cetak</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* 4 Stats Cards (Row Atas) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Total Inspeksi Hari Ini */}
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_8px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(30,75,142,0.12)] hover:-translate-y-1 transition-all duration-500 flex items-center justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-[#1E4B8E]/20 before:via-[#F0E5CF]/40 before:to-[#1E4B8E]/20 before:bg-[length:200%_100%] before:animate-[borderFlow_3s_linear_infinite] before:-z-10 hover:before:from-[#1E4B8E]/40 hover:before:via-[#F0E5CF]/60 hover:before:to-[#1E4B8E]/40">
+          {/* Main content background */}
+          <div className="absolute inset-[2px] bg-white dark:bg-gray-800 rounded-[14px] z-0"></div>
+          
+          {/* Animated gradient background overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1E4B8E]/[0.02] via-transparent to-[#F0E5CF]/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+          
+          <div className="relative z-10">
+            <p className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider">
+              Inspeksi Hari Ini
+            </p>
+            <p className="text-3xl font-black text-[#1E4B8E] mt-1.5 font-mono">
+              {stats?.inspections_today || 0}
+            </p>
+            <span className="inline-flex items-center text-[10px] text-[#1E4B8E] bg-gradient-to-r from-[#F0E5CF] to-[#F0E5CF]/70 font-bold px-2 py-0.5 rounded-full mt-2 border border-[#C8C6C6]/40 shadow-sm">
+              <CheckCircleIcon className="w-3 h-3 mr-1 text-[#1E4B8E]" /> Shift 1st &amp; 2nd
+            </span>
+          </div>
+          <div className="relative z-10 w-14 h-14 bg-gradient-to-br from-[#1E4B8E]/10 via-[#F0E5CF]/20 to-[#1E4B8E]/5 text-[#1E4B8E] rounded-2xl flex items-center justify-center border border-[#1E4B8E]/10 shadow-[0_4px_12px_rgba(30,75,142,0.08)] backdrop-blur-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <InspectionIcon className="w-7 h-7" />
+          </div>
+        </div>
+
+        {/* Total Item Rusak Hari Ini */}
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_8px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(220,38,38,0.12)] hover:-translate-y-1 transition-all duration-500 flex items-center justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-red-500/20 before:via-orange-400/40 before:to-red-500/20 before:bg-[length:200%_100%] before:animate-[borderFlow_3s_linear_infinite] before:-z-10 hover:before:from-red-500/40 hover:before:via-orange-400/60 hover:before:to-red-500/40">
+          <div className="absolute inset-[2px] bg-white dark:bg-gray-800 rounded-[14px] z-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-red-50/30 via-transparent to-red-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+          
+          <div className="relative z-10">
+            <p className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider">
+              Item Rusak Hari Ini
+            </p>
+            <p className="text-3xl font-black text-[#DC2626] mt-1.5 font-mono">
+              {stats?.broken_items_today || 0}
+            </p>
+            <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full mt-2 shadow-sm ${
+              (stats?.broken_items_today || 0) > 0 ? 'text-red-700 bg-gradient-to-r from-red-50 to-red-100/70 border border-red-200/60' : 'text-slate-600 dark:text-gray-300 bg-slate-100'
+            }`}>
+              <WarningIcon className="w-3 h-3 mr-1" /> Perlu Tindak Lanjut
+            </span>
+          </div>
+          <div className="relative z-10 w-14 h-14 bg-gradient-to-br from-red-50/80 via-red-100/40 to-red-50/60 text-[#DC2626] rounded-2xl flex items-center justify-center border border-red-200/50 shadow-[0_4px_12px_rgba(220,38,38,0.1)] backdrop-blur-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <WarningIcon className="w-7 h-7" />
+          </div>
+        </div>
+
+        {/* Operator Aktif */}
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_8px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(22,163,74,0.12)] hover:-translate-y-1 transition-all duration-500 flex items-center justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-green-500/20 before:via-emerald-400/40 before:to-green-500/20 before:bg-[length:200%_100%] before:animate-[borderFlow_3s_linear_infinite] before:-z-10 hover:before:from-green-500/40 hover:before:via-emerald-400/60 hover:before:to-green-500/40">
+          <div className="absolute inset-[2px] bg-white dark:bg-gray-800 rounded-[14px] z-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50/30 via-transparent to-green-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+          
+          <div className="relative z-10">
+            <p className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider">
+              Operator Aktif
+            </p>
+            <p className="text-3xl font-black text-[#16A34A] mt-1.5 font-mono">
+              {stats?.active_operators || 0}
+            </p>
+            <span className="inline-flex items-center text-[10px] text-green-800 bg-gradient-to-r from-green-50 to-green-100/70 font-bold px-2 py-0.5 rounded-full mt-2 border border-green-200/60 shadow-sm">
+              Terverifikasi HSE
+            </span>
+          </div>
+          <div className="relative z-10 w-14 h-14 bg-gradient-to-br from-green-50/80 via-green-100/40 to-green-50/60 text-[#16A34A] rounded-2xl flex items-center justify-center border border-green-200/50 shadow-[0_4px_12px_rgba(22,163,74,0.1)] backdrop-blur-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <UsersIcon className="w-7 h-7" />
+          </div>
+        </div>
+
+        {/* Kendaraan Belum Diinspeksi */}
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_8px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(217,119,6,0.12)] hover:-translate-y-1 transition-all duration-500 flex items-center justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-amber-500/20 before:via-yellow-400/40 before:to-amber-500/20 before:bg-[length:200%_100%] before:animate-[borderFlow_3s_linear_infinite] before:-z-10 hover:before:from-amber-500/40 hover:before:via-yellow-400/60 hover:before:to-amber-500/40">
+          <div className="absolute inset-[2px] bg-white dark:bg-gray-800 rounded-[14px] z-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-50/30 via-transparent to-amber-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+          
+          <div className="relative z-10">
+            <p className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider">
+              Unit Belum Diinspeksi
+            </p>
+            <p className="text-3xl font-black text-[#D97706] mt-1.5 font-mono">
+              {stats?.vehicles_not_inspected?.length || 0}
+            </p>
+            <span className="inline-flex items-center text-[10px] text-amber-800 bg-gradient-to-r from-[#F0E5CF] to-amber-100/70 font-bold px-2 py-0.5 rounded-full mt-2 border border-amber-200/50 shadow-sm">
+              <ClockIcon className="w-3 h-3 mr-1 text-amber-700" /> Menunggu Pagi/Malam
+            </span>
+          </div>
+          <div className="relative z-10 w-14 h-14 bg-gradient-to-br from-amber-50/80 via-amber-100/40 to-amber-50/60 text-[#D97706] rounded-2xl flex items-center justify-center border border-amber-200/50 shadow-[0_4px_12px_rgba(217,119,6,0.1)] backdrop-blur-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <VehicleIcon className="w-7 h-7" />
+          </div>
+        </div>
+      </div>
+
+      {/* ALERT PANEL: Item Rusak Dilaporkan Hari Ini */}
+      {stats?.broken_items_alert && stats.broken_items_alert.length > 0 && (
+        <div className="bg-gradient-to-br from-red-50/90 to-red-50/60 border border-red-200/80 rounded-2xl p-5 shadow-[0_2px_8px_rgba(220,38,38,0.08)]">
+          <div className="flex items-center space-x-2.5 text-red-800 font-bold text-sm mb-3">
+            <WarningIcon className="w-5 h-5 text-red-600" />
+            <span>PERINGATAN ITEM RUSAK HARI INI ({stats.broken_items_alert.length} Item Dilaporkan)</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {stats.broken_items_alert.map((alert, idx) => (
+              <div key={idx} className="bg-white dark:bg-gray-800 p-3.5 rounded-xl border border-red-200/80 shadow-sm text-xs hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center justify-between font-semibold text-red-900 mb-1">
+                  <span>{alert.vehicle_number}</span>
+                  <span className="text-[10px] uppercase px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-mono">
+                    Shift {alert.shift}
+                  </span>
+                </div>
+                <div className="font-medium text-[#1A1A2E] dark:text-white">{alert.item_description}</div>
+                <p className="text-[#6B7280] italic mt-1 bg-gray-50 p-1.5 rounded text-[11px] border border-gray-100">
+                  "{alert.notes}"
+                </p>
+                <div className="mt-2 text-[10px] text-gray-500 flex justify-between items-center">
+                  <span>Operator: <strong>{alert.operator_name}</strong></span>
+                  <Link
+                    to={`/admin/inspections/${alert.inspection_id}`}
+                    className="text-[#1E4B8E] hover:underline font-semibold"
+                  >
+                    Periksa & Setujui →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Charts Section: Bar Chart & Donut Chart */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Grafik Bar: Inspeksi 7 Hari Terakhir (Span 2) */}
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-sm font-bold text-[#1A1A2E] dark:text-white tracking-tight">
+                Tren Inspeksi Harian (7 Hari Terakhir)
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-gray-400 mt-0.5">Jumlah formulir inspeksi yang berhasil disubmit operator</p>
+            </div>
+          </div>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats?.trend_7_days || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <XAxis dataKey="day" stroke="#6B7280" fontSize={11} tickLine={false} />
+                <YAxis stroke="#6B7280" fontSize={11} allowDecimals={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#162F5C', borderRadius: '8px', color: '#fff', fontSize: '11px', border: 'none' }}
+                  labelStyle={{ color: '#F0E5CF' }}
+                />
+                <Bar dataKey="total" fill="#1E4B8E" radius={[4, 4, 0, 0]} barSize={32} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Grafik Donut: Persentase Kondisi Bagus vs Rusak vs N/A */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+          <div className="mb-4">
+            <h3 className="text-sm font-bold text-[#1A1A2E] dark:text-white tracking-tight">
+              Kondisi Hasil Checklist
+            </h3>
+            <p className="text-xs text-[#6B7280] mt-0.5">Rasio pemeriksaan Bagus vs Rusak vs N/A</p>
+          </div>
+          <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={stats?.condition_stats || [
+                    { name: 'Bagus', value: 85, color: '#16A34A' },
+                    { name: 'Rusak', value: 3, color: '#DC2626' },
+                    { name: 'N/A', value: 12, color: '#9CA3AF' }
+                  ]}
+                  innerRadius={50}
+                  outerRadius={75}
+                  paddingAngle={4}
+                  dataKey="value"
+                >
+                  {(stats?.condition_stats || []).map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color || conditionColors[entry.name]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#162F5C', borderRadius: '8px', color: '#fff', fontSize: '11px', border: 'none' }}
+                />
+                <Legend
+                  formatter={(value) => <span className="text-xs text-gray-700 font-medium">{value}</span>}
+                  iconType="circle"
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid: 5 Inspeksi Terbaru & Unit Belum Diinspeksi */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 5 Pengisian Form Terbaru (Span 2) */}
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden">
+          <div className="p-5 border-b border-slate-200 dark:border-gray-700/80 flex items-center justify-between bg-gradient-to-r from-white to-slate-50/30">
+            <div>
+              <h3 className="text-sm font-bold text-[#1A1A2E] dark:text-white">5 Pengisian Form Terbaru</h3>
+              <p className="text-xs text-slate-500">Status kiriman real-time dari operator lapangan</p>
+            </div>
+            <Link
+              to="/admin/inspections"
+              className="text-xs font-bold text-[#1E4B8E] hover:underline flex items-center"
+            >
+              <span>Lihat Semua</span>
+              <ChevronRightIcon className="w-3.5 h-3.5 ml-0.5" />
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-[#F7F6F2] border-b border-[#C8C6C6] text-slate-700 font-bold">
+                  <th className="py-3 px-4">Tanggal & Jam</th>
+                  <th className="py-3 px-4">Unit / No. Polisi</th>
+                  <th className="py-3 px-4">Operator</th>
+                  <th className="py-3 px-4">Shift</th>
+                  <th className="py-3 px-4">Kondisi Item</th>
+                  <th className="py-3 px-4 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {stats?.recent_inspections && stats.recent_inspections.length > 0 ? (
+                  stats.recent_inspections.map((item) => (
+                    <tr key={item.id} className="hover:bg-blue-50/30 transition-colors">
+                      <td className="py-3 px-4 font-mono text-gray-700">
+                        {item.inspection_date} {item.inspection_time ? `• ${item.inspection_time}` : ''}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="font-semibold text-[#1A1A2E] dark:text-white">{item.vehicle_number}</div>
+                        <div className="text-[10px] text-[#6B7280]">{item.form_name}</div>
+                      </td>
+                      <td className="py-3 px-4 font-medium text-gray-800">
+                        {item.operator_name}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold font-mono ${
+                          item.shift === '1st' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'
+                        }`}>
+                          {item.shift === '1st' ? 'PAGI (1st)' : 'MALAM (2nd)'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        {item.broken_count > 0 ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-[#DC2626]">
+                            <WarningIcon className="w-3 h-3 mr-1" />
+                            {item.broken_count} Rusak
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-[#16A34A]">
+                            <CheckCircleIcon className="w-3 h-3 mr-1" />
+                            Semua Bagus
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <Link
+                          to={`/admin/inspections/${item.id}`}
+                          className="inline-flex items-center px-2.5 py-1 rounded-md bg-[#F0E5CF] hover:bg-[#1E4B8E] text-[#1E4B8E] hover:text-white font-bold text-[11px] border border-[#C8C6C6] transition-colors"
+                        >
+                          Detail
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="py-8 text-center text-gray-500">
+                      Belum ada data inspeksi hari ini
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Kendaraan Belum Diinspeksi Hari Ini */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 p-5">
+          <h3 className="text-sm font-bold text-[#1A1A2E] dark:text-white">Kendaraan Belum Diperiksa</h3>
+          <p className="text-xs text-slate-500 dark:text-gray-400 mb-3">Armada aktif yang belum memiliki catatan inspeksi hari ini</p>
+          <div className="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+            {stats?.vehicles_not_inspected && stats.vehicles_not_inspected.length > 0 ? (
+              stats.vehicles_not_inspected.map((v) => (
+                <div key={v.id} className="p-2.5 bg-[#F7F6F2] rounded-lg border border-[#C8C6C6]/80 flex items-center justify-between text-xs">
+                  <div>
+                    <div className="font-bold text-slate-800">{v.vehicle_number}</div>
+                    <div className="text-[10px] text-slate-500">{v.vehicle_type} • {v.department}</div>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 bg-[#F0E5CF] text-[#1E4B8E] rounded font-bold border border-[#C8C6C6]/50">
+                    Belum Ada Form
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-xs text-green-700 bg-green-50 rounded-lg border border-green-200">
+                <CheckCircleIcon className="w-5 h-5 mx-auto mb-1 text-green-600" />
+                Semua armada aktif telah diinspeksi hari ini!
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
