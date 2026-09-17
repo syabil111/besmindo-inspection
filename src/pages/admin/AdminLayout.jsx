@@ -192,19 +192,22 @@ const AdminLayout = () => {
       {/* Sidebar (240px fixed) */}
       <aside className="w-[240px] bg-[#162F5C] dark:bg-gray-800 text-white flex-shrink-0 fixed h-full flex flex-col z-20 shadow-lg border-r border-[#C8C6C6]/20 dark:border-gray-700">
         {/* Logo BESMINDO */}
-        <div className="p-5 border-b border-white/10 dark:border-gray-700 flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-lg bg-white/10 dark:bg-gray-700 flex items-center justify-center p-1 border border-white/15 dark:border-gray-600">
+        <div className="p-5 border-b border-white/10 dark:border-gray-700 flex items-center space-x-3 relative overflow-hidden">
+          {/* Subtle curved background shine */}
+          <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/5 blur-xl pointer-events-none" />
+          
+          <div className="w-10 h-10 rounded-xl bg-white/15 dark:bg-gray-700 flex items-center justify-center p-1.5 border border-white/20 dark:border-gray-600 shadow-md">
             <img src="/logo.png" alt="BESMINDO" className="w-full h-full object-contain" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-wider text-white">BESMINDO</h1>
-            <p className="text-[11px] text-[#F0E5CF] dark:text-gray-400 tracking-tight">Materi Sewatama</p>
+            <h1 className="text-lg font-black tracking-wider text-white">BESMINDO</h1>
+            <p className="text-[11px] text-[#F0E5CF] dark:text-gray-400 tracking-tight font-medium">Materi Sewatama</p>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 space-y-1 flex-1 overflow-y-auto">
-          <div className="px-3 py-2 text-[10px] font-semibold tracking-wider text-[#C8C6C6] dark:text-gray-400 uppercase">
+        <nav className="p-3 space-y-1.5 flex-1 overflow-y-auto">
+          <div className="px-3 py-2 text-[10px] font-bold tracking-wider text-[#C8C6C6] dark:text-gray-400 uppercase">
             Menu Utama
           </div>
           {menuItems.map((item, index) => {
@@ -217,9 +220,9 @@ const AdminLayout = () => {
                 <div key={index}>
                   <button
                     onClick={() => setShowMasterDataMenu(!showMasterDataMenu)}
-                    className={`flex items-center justify-between w-full px-3.5 py-2.5 rounded-md text-sm font-medium transition-all duration-150 ${
+                    className={`flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer ${
                       isAnyChildActive
-                        ? 'bg-[#1E4B8E] dark:bg-blue-600 text-white font-semibold shadow-sm border-l-4 border-[#F0E5CF] dark:border-blue-400'
+                        ? 'bg-gradient-to-r from-[#1E4B8E] to-[#255DB0] text-white font-semibold shadow-md shadow-blue-950/30'
                         : 'text-[#C8C6C6] dark:text-gray-300 hover:bg-white/10 dark:hover:bg-gray-700 hover:text-white'
                     }`}
                   >
@@ -228,7 +231,7 @@ const AdminLayout = () => {
                       <span>{item.label}</span>
                     </div>
                     <svg
-                      className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -238,16 +241,16 @@ const AdminLayout = () => {
                   </button>
                   
                   {isOpen && (
-                    <div className="ml-4 mt-1 space-y-1 border-l-2 border-white/10 dark:border-gray-700 pl-2">
+                    <div className="ml-4 mt-1.5 space-y-1 border-l-2 border-white/15 dark:border-gray-700 pl-2.5">
                       {item.children.map((child) => {
                         const isChildActive = location.pathname === child.path;
                         return (
                           <NavLink
                             key={child.path}
                             to={child.path}
-                            className={`block px-3 py-2 rounded-md text-xs font-medium transition-all duration-150 ${
+                            className={`block px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 ${
                               isChildActive
-                                ? 'bg-[#1E4B8E]/60 dark:bg-blue-600/50 text-white font-semibold'
+                                ? 'bg-white/15 text-white font-bold'
                                 : 'text-[#C8C6C6] dark:text-gray-300 hover:bg-white/5 dark:hover:bg-gray-700 hover:text-white'
                             }`}
                           >
@@ -268,9 +271,9 @@ const AdminLayout = () => {
               <NavLink
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-md text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#1E4B8E] dark:bg-blue-600 text-white font-semibold shadow-sm border-l-4 border-[#F0E5CF] dark:border-blue-400'
+                    ? 'bg-gradient-to-r from-[#1E4B8E] to-[#255DB0] text-white font-semibold shadow-md shadow-blue-950/30'
                     : 'text-[#C8C6C6] dark:text-gray-300 hover:bg-white/10 dark:hover:bg-gray-700 hover:text-white'
                 }`}
               >
@@ -330,47 +333,26 @@ const AdminLayout = () => {
 
       {/* Main Area */}
       <div className="flex-1 ml-[240px] flex flex-col min-w-0 bg-[#F7F6F2] dark:bg-gray-900 transition-colors duration-200">
-        {/* Topbar — Elegant Premium */}
-        <header className="sticky top-0 z-10 bg-white/85 dark:bg-gray-800/85 backdrop-blur-xl border-b border-[#C8C6C6]/70 dark:border-gray-700 px-8 py-3 shadow-[0_1px_0_rgba(30,75,142,0.06),0_8px_24px_-12px_rgba(22,47,92,0.18)] transition-colors duration-200">
-          {/* Garis aksen gradient di atas header */}
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#162F5C] via-[#1E4B8E] to-[#C9A227]" />
-          <div className="flex items-center justify-between gap-6">
+        {/* Topbar — Clean & Simple */}
+        <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-slate-200 dark:border-gray-700 px-6 py-3.5 shadow-xs transition-colors duration-200">
+          <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <div className="flex items-center gap-2 text-[11px] font-semibold tracking-wide">
-                <span className="inline-flex items-center gap-1.5 text-slate-400 dark:text-gray-500">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  ADMIN PORTAL
-                </span>
-                <svg className="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#1E4B8E]/8 text-[#1E4B8E] dark:bg-blue-500/10 dark:text-blue-300 border border-[#1E4B8E]/15">
-                  {getBreadcrumb()}
-                </span>
-              </div>
-              <div className="flex items-baseline gap-3 mt-1">
-                <h2 className="text-[22px] leading-tight font-black tracking-tight bg-gradient-to-r from-[#162F5C] to-[#1E4B8E] dark:from-white dark:to-blue-200 bg-clip-text text-transparent">
-                  {getBreadcrumb()}
-                </h2>
-                <span className="hidden lg:inline text-[11px] text-slate-400 dark:text-gray-500 font-medium capitalize">
-                  {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-                </span>
-              </div>
+              <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
+                {getBreadcrumb()}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-gray-400 capitalize mt-0.5">
+                {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              </p>
             </div>
 
             <div className="flex items-center gap-3">
               {/* Status sistem */}
-              <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/70 dark:border-emerald-500/20">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 tracking-wide">SYSTEM ONLINE</span>
+              <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">System Online</span>
               </div>
 
-              <div className="hidden sm:block w-px h-8 bg-gradient-to-b from-transparent via-[#C8C6C6] to-transparent dark:via-gray-600" />
+              <div className="hidden sm:block w-px h-7 bg-slate-200 dark:bg-gray-700" />
 
               {/* Tombol suara notifikasi */}
               <button

@@ -1094,26 +1094,66 @@ const db = {
 
     // 10. INSERT Inspections
     if (upper.startsWith('INSERT INTO INSPECTIONS')) {
+      let form_type_id, vehicle_id, operator_id, shift, inspection_date, inspection_time,
+          department, location, asset_status, km_reading_value, exp_pajak, exp_kiur,
+          exp_coi, tahun_k3, running_hours, sn_engine, model, operator_name;
+
+      if (params.length === 17) {
+        // Fallback if 17 params passed (operator_id omitted)
+        [
+          form_type_id, vehicle_id, shift, inspection_date, inspection_time,
+          department, location, asset_status, km_reading_value, exp_pajak, exp_kiur,
+          exp_coi, tahun_k3, running_hours, sn_engine, model, operator_name
+        ] = params;
+        operator_id = null;
+      } else {
+        [
+          form_type_id, vehicle_id, operator_id, shift, inspection_date, inspection_time,
+          department, location, asset_status, km_reading_value, exp_pajak, exp_kiur,
+          exp_coi, tahun_k3, running_hours, sn_engine, model, operator_name
+        ] = params;
+      }
+
+      // Safeguard: if shift looks like a date (e.g. 2026-09-16) and inspection_date looks like a time (e.g. 14:21)
+      if (typeof shift === 'string' && shift.includes('-') && typeof inspection_date === 'string' && inspection_date.includes(':')) {
+        const realDate = shift;
+        const realTime = inspection_date;
+        const realShift = typeof operator_id === 'string' && (operator_id === '1st' || operator_id === '2nd') ? operator_id : '1st';
+        const realDept = inspection_time;
+        const realLoc = department;
+        const realStatus = location;
+        const realOpName = model || sn_engine || operator_name || 'Operator';
+        
+        shift = realShift;
+        inspection_date = realDate;
+        inspection_time = realTime;
+        department = realDept;
+        location = realLoc;
+        asset_status = realStatus;
+        operator_name = realOpName;
+        operator_id = null;
+      }
+
       const newInsp = {
         id: `insp-${Date.now()}`,
-        form_type_id: params[0],
-        vehicle_id: params[1],
-        operator_id: params[2],
-        shift: params[3],
-        inspection_date: params[4],
-        inspection_time: params[5],
-        department: params[6],
-        location: params[7],
-        asset_status: params[8],
-        km_reading_value: params[9],
-        exp_pajak: params[10],
-        exp_kiur: params[11],
-        exp_coi: params[12],
-        tahun_k3: params[13],
-        running_hours: params[14],
-        sn_engine: params[15],
-        model: params[16],
-        operator_name: params[17],
+        form_type_id,
+        vehicle_id,
+        operator_id: operator_id || null,
+        shift: shift || '1st',
+        inspection_date: inspection_date || new Date().toISOString().split('T')[0],
+        inspection_time: inspection_time || new Date().toTimeString().slice(0, 5),
+        department: department || null,
+        location: location || null,
+        asset_status: asset_status || 'Operasional',
+        km_reading_value: km_reading_value || null,
+        exp_pajak: exp_pajak || null,
+        exp_kiur: exp_kiur || null,
+        exp_coi: exp_coi || null,
+        tahun_k3: tahun_k3 || null,
+        running_hours: running_hours || null,
+        sn_engine: sn_engine || null,
+        model: model || null,
+        operator_name: operator_name || 'Operator',
         status: 'submitted',
         acknowledged_by: null,
         acknowledged_at: null,
@@ -1151,7 +1191,7 @@ const db = {
       return { rows: [newRes] };
     }
 
-    // 11. UPDATE Inspections (Acknowledge)
+    // 11. UPDATE Inspections (Acknowledge / problem_notes)
     if (upper.startsWith('UPDATE INSPECTIONS') && sql.includes('acknowledged_by')) {
       const adminId = params[0];
       const inspId = params[1];
@@ -1159,6 +1199,17 @@ const db = {
       if (insp) {
         insp.acknowledged_by = adminId;
         insp.acknowledged_at = new Date().toISOString();
+        return { rows: [insp] };
+      }
+      return { rows: [] };
+    }
+
+    if (upper.startsWith('UPDATE INSPECTIONS') && sql.includes('problem_notes')) {
+      const notes = params[0];
+      const inspId = params[1];
+      const insp = mockData.inspections.find(i => i.id === inspId);
+      if (insp) {
+        insp.problem_notes = notes;
         return { rows: [insp] };
       }
       return { rows: [] };

@@ -290,11 +290,12 @@ router.post('/inspections', async (req, res) => {
        (form_type_id, vehicle_id, operator_id, shift, inspection_date, inspection_time,
         department, location, asset_status, km_reading_value, exp_pajak, exp_kiur, exp_coi,
         tahun_k3, running_hours, sn_engine, model, operator_name, status, submitted_at) 
-       VALUES ($1, $2, NULL, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, 'submitted', NOW()) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, 'submitted', NOW()) 
        RETURNING id`,
       [
         form_type_id,
         vehicle_id,
+        null,
         shift,
         inspection_date,
         inspection_time || new Date().toTimeString().slice(0, 5),

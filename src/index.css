@@ -69,6 +69,123 @@
   }
 }
 
+/* ============================================================= */
+/* ELEGANT CURVE SYSTEM — Premium SVG Wave & Curve Utilities     */
+/* ============================================================= */
+
+/* Wave shimmer animation */
+@keyframes waveShimmer {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-25px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes waveFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes curveGlow {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-wave-shimmer {
+  animation: waveShimmer 6s ease-in-out infinite;
+}
+
+.animate-wave-float {
+  animation: waveFloat 4s ease-in-out infinite;
+}
+
+.animate-curve-glow {
+  animation: curveGlow 3s ease-in-out infinite;
+}
+
+.animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradientFlow 4s ease infinite;
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.5s ease-out;
+}
+
+/* Curve separator base */
+.curve-separator {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.curve-separator svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 2px);
+  margin-left: -1px;
+}
+
+/* Topbar subtle curve shadow */
+.topbar-curve-shadow {
+  position: relative;
+}
+.topbar-curve-shadow::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 10%;
+  right: 10%;
+  height: 12px;
+  background: radial-gradient(ellipse at center, rgba(30,75,142,0.06) 0%, transparent 70%);
+  border-radius: 0 0 50% 50%;
+  pointer-events: none;
+}
+
+/* Card with top curve accent */
+.card-curve-accent {
+  position: relative;
+  overflow: hidden;
+}
+.card-curve-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5%;
+  right: -5%;
+  height: 6px;
+  background: linear-gradient(90deg, #1E4B8E, #2A5BAD, #C9A227, #2A5BAD, #1E4B8E);
+  background-size: 200% 100%;
+  animation: gradientFlow 4s ease infinite;
+  border-radius: 0 0 50% 50%;
+}
+
+/* Sidebar curve embellishment */
+.sidebar-curve-glow {
+  position: relative;
+}
+.sidebar-curve-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: radial-gradient(ellipse at bottom center, rgba(30,75,142,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
 /* Print Styles */
 @media print {
   @page {
@@ -86,5 +203,12 @@
   
   .print-only {
     display: block !important;
+  }
+
+  .curve-separator,
+  .card-curve-accent::before,
+  .topbar-curve-shadow::after,
+  .sidebar-curve-glow::after {
+    display: none !important;
   }
 }

@@ -772,58 +772,165 @@ router.get('/inspections/:id/print', async (req, res) => {
 // Get dashboard stats & charts
 router.get('/dashboard', async (req, res) => {
   try {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
+
+    const normalizeDate = (d) => {
+      if (!d) return '';
+      if (typeof d === 'string') return d.includes('T') ? d.split('T')[0] : d;
+      if (d instanceof Date) return d.toISOString().split('T')[0];
+      return String(d);
+    };
 
     // Inspections list
     const inspRes = await pool.query('SELECT * FROM inspections');
     const allInspections = inspRes.rows || [];
 
-    const inspectionsToday = allInspections.filter(i => i.inspection_date === today && i.status === 'submitted');
-    
     // Vehicles
     const vehRes = await pool.query('SELECT * FROM vehicles WHERE is_active = true');
     const activeVehicles = vehRes.rows || [];
+    const vehicleMap = new Map(activeVehicles.map(v => [v.id, v]));
 
-    const vehiclesNotInspected = activeVehicles.filter(v => 
-      !inspectionsToday.some(i => i.vehicle_id === v.id)
-    );
+    const inspectionsToday = allInspections.filter(i => {
+      const iDate = normalizeDate(i.inspection_date);
+      return iDate === today && i.status !== 'draft';
+    });
+
+    // Detailed shift status per active vehicle today
+    const vehicleShiftStatus = activeVehicles.map(v => {
+      const vInspectionsToday = inspectionsToday.filter(i => i.vehicle_id === v.id);
+      const morningInsp = vInspectionsToday.find(i => i.shift === '1st');
+      const eveningInsp = vInspectionsToday.find(i => i.shift === '2nd');
+
+      const hasMorning = !!morningInsp;
+      const hasEvening = !!eveningInsp;
+
+      let availabilityStatus = 'completely_uninspected';
+      let availabilityLabel = 'Belum Diinspeksi Sama Sekali (Tersedia)';
+      
+      if (!hasMorning && !hasEvening) {
+        availabilityStatus = 'completely_uninspected';
+        availabilityLabel = 'Belum Ada Form Pagi & Malam (Tersedia Penuh)';
+      } else if (hasMorning && !hasEvening) {
+        availabilityStatus = 'morning_only';
+        availabilityLabel = 'Sudah Diinspeksi Pagi (Tersedia Shift Malam)';
+      } else if (!hasMorning && hasEvening) {
+        availabilityStatus = 'evening_only';
+        availabilityLabel = 'Sudah Diinspeksi Malam (Pagi Belum Diisi)';
+      } else {
+        availabilityStatus = 'complete_both';
+        availabilityLabel = 'Lengkap (Sudah Pagi & Malam)';
+      }
+
+      return {
+        id: v.id,
+        vehicle_number: v.vehicle_number,
+        vehicle_type: v.vehicle_type,
+        department: v.department,
+        form_type: v.form_type,
+        asset_bms_no: v.asset_bms_no,
+        has_morning: hasMorning,
+        has_evening: hasEvening,
+        is_completely_uninspected: !hasMorning && !hasEvening,
+        morning_inspection: morningInsp ? {
+          id: morningInsp.id,
+          time: morningInsp.inspection_time || '-',
+          operator_name: morningInsp.operator_name || 'Operator',
+          broken_count: morningInsp.broken_count || 0
+        } : null,
+        evening_inspection: eveningInsp ? {
+          id: eveningInsp.id,
+          time: eveningInsp.inspection_time || '-',
+          operator_name: eveningInsp.operator_name || 'Operator',
+          broken_count: eveningInsp.broken_count || 0
+        } : null,
+        availability_status: availabilityStatus,
+        availability_label: availabilityLabel
+      };
+    });
+
+    const shiftTrackingStats = {
+      total_vehicles: activeVehicles.length,
+      completely_uninspected: vehicleShiftStatus.filter(v => v.is_completely_uninspected).length,
+      missing_morning: vehicleShiftStatus.filter(v => !v.has_morning).length,
+      missing_evening: vehicleShiftStatus.filter(v => !v.has_evening).length,
+      complete_both: vehicleShiftStatus.filter(v => v.has_morning && v.has_evening).length
+    };
+
+    const vehiclesNotInspected = vehicleShiftStatus.filter(v => v.is_completely_uninspected);
 
     // Users
     const userRes = await pool.query("SELECT * FROM users WHERE role = 'operator' AND status = 'active'");
     const activeOperators = userRes.rows || [];
 
-    // Broken items today
-    const brokenList = [];
+    // Broken items (grouped by master vehicle)
+    const vehicleAlertMap = new Map();
     let goodCount = 0;
     let brokenCount = 0;
     let naCount = 0;
+    let brokenTodayCount = 0;
 
     for (const insp of allInspections) {
+      const iDate = normalizeDate(insp.inspection_date);
+      const vehicle = vehicleMap.get(insp.vehicle_id);
+      const vehNumber = insp.vehicle_number || vehicle?.vehicle_number || insp.sn_engine || 'Unit';
+      const vehType = vehicle?.vehicle_type || insp.vehicle_type || '';
+      const opName = insp.operator_name || 'Operator';
+
       const rRes = await pool.query('SELECT * FROM inspection_results WHERE inspection_id = $1', [insp.id]);
+      const brokenResults = [];
+
       (rRes.rows || []).forEach(r => {
         if (r.condition === 'good') goodCount++;
         else if (r.condition === 'broken') {
           brokenCount++;
-          if (insp.inspection_date === today) {
-            brokenList.push({
-              inspection_id: insp.id,
-              vehicle_number: insp.vehicle_number,
-              operator_name: insp.operator_name,
-              shift: insp.shift,
-              item_description: r.description,
-              notes: r.notes
-            });
-          }
+          if (iDate === today) brokenTodayCount++;
+          brokenResults.push({
+            checklist_item_id: r.checklist_item_id,
+            item_description: r.description || 'Item Checklist',
+            notes: r.notes || insp.problem_notes || 'Kondisi rusak dilaporkan operator'
+          });
         } else if (r.condition === 'na') naCount++;
       });
+
+      // Tampilkan di alert dashboard jika inspeksi hari ini ATAU belum diapprove/acknowledged
+      if (brokenResults.length > 0 && (iDate === today || !insp.acknowledged_by)) {
+        const key = insp.vehicle_id || vehNumber;
+        if (!vehicleAlertMap.has(key)) {
+          vehicleAlertMap.set(key, {
+            vehicle_id: insp.vehicle_id,
+            vehicle_number: vehNumber,
+            vehicle_type: vehType,
+            inspection_id: insp.id,
+            inspection_date: iDate,
+            shift: insp.shift || '1st',
+            operator_name: opName,
+            acknowledged_by: insp.acknowledged_by || null,
+            is_today: iDate === today,
+            items: []
+          });
+        }
+
+        const group = vehicleAlertMap.get(key);
+        brokenResults.forEach(br => {
+          group.items.push(br);
+        });
+      }
     }
+
+    // Convert map to array with aggregated descriptions
+    const brokenVehiclesAlert = Array.from(vehicleAlertMap.values()).map(g => ({
+      ...g,
+      total_broken: g.items.length,
+      item_description: g.items.map(it => it.item_description).join(', '),
+      notes: g.items.map(it => it.notes).filter(Boolean).join('; ')
+    }));
 
     // 7-day trend array for Bar chart
     const last7Days = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date(Date.now() - i * 86400000);
-      const dateStr = d.toISOString().split('T')[0];
-      const count = allInspections.filter(item => item.inspection_date === dateStr).length;
+      const dateStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(d);
+      const count = allInspections.filter(item => normalizeDate(item.inspection_date) === dateStr).length;
       const dayName = d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' });
       last7Days.push({
         date: dateStr,
@@ -832,18 +939,23 @@ router.get('/dashboard', async (req, res) => {
       });
     }
 
-    // Recent 5 inspections
-    const recentInspections = allInspections.slice(0, 5);
+    // Recent 5 inspections sorted newest first
+    const recentInspections = [...allInspections]
+      .sort((a, b) => new Date(b.created_at || b.submitted_at || b.inspection_date) - new Date(a.created_at || a.submitted_at || a.inspection_date))
+      .slice(0, 5);
 
     res.json({
       success: true,
       data: {
         inspections_today: inspectionsToday.length,
-        broken_items_today: brokenList.length,
+        broken_items_today: brokenTodayCount || brokenVehiclesAlert.reduce((sum, v) => sum + v.items.length, 0),
         active_operators: activeOperators.length,
         vehicles_not_inspected: vehiclesNotInspected,
+        vehicle_shift_status: vehicleShiftStatus,
+        shift_tracking_stats: shiftTrackingStats,
         recent_inspections: recentInspections,
-        broken_items_alert: brokenList,
+        broken_items_alert: brokenVehiclesAlert,
+        total_broken_items_count: brokenVehiclesAlert.reduce((sum, v) => sum + v.items.length, 0),
         trend_7_days: last7Days,
         condition_stats: [
           { name: 'Bagus', value: goodCount || 85, color: '#16A34A' },
@@ -911,7 +1023,20 @@ router.get('/reports', async (req, res) => {
     if (form_type) inspections = inspections.filter(i => i.form_type_key === form_type);
     if (vehicle_id) inspections = inspections.filter(i => i.vehicle_id === vehicle_id);
 
-    // Summary calculation
+    // Summary calculation with morning/evening usage detection
+    // Build a map to know if a vehicle has both shifts on the same day
+    const shiftMap = {};
+    inspections.forEach(i => {
+      const key = `${i.vehicle_id}_${i.inspection_date}`;
+      if (!shiftMap[key]) shiftMap[key] = new Set();
+      shiftMap[key].add(i.shift);
+    });
+    // Attach a flag to each inspection indicating both shifts present
+    inspections = inspections.map(i => ({
+      ...i,
+      hasMorningAndEvening: (shiftMap[`${i.vehicle_id}_${i.inspection_date}`] || new Set()).size === 2
+    }));
+
     let totalGood = 0;
     let totalBroken = 0;
     let totalNA = 0;

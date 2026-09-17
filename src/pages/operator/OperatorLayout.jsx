@@ -7,9 +7,68 @@ import { Outlet } from 'react-router-dom';
 // Alur linear: SelectForm → FillForm → Success
 // ============================================================================
 
+// Reusable SVG Curve Components
+const HeaderBottomWave = () => (
+  <div className="curve-separator" style={{ marginTop: '-1px' }}>
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ height: '40px' }}>
+      <defs>
+        <linearGradient id="headerWaveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#1E4B8E" />
+          <stop offset="50%" stopColor="#2A5BAD" />
+          <stop offset="100%" stopColor="#1E3A6E" />
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#headerWaveGrad)"
+        d="M0,0 L0,40 Q180,80 360,50 T720,55 T1080,45 T1440,60 L1440,0 Z"
+      />
+      <path
+        fill="url(#headerWaveGrad)"
+        opacity="0.4"
+        d="M0,0 L0,30 Q240,65 480,40 T960,50 T1440,35 L1440,0 Z"
+        className="animate-wave-shimmer"
+      />
+    </svg>
+  </div>
+);
+
+const FooterTopWave = () => (
+  <div className="curve-separator" style={{ marginBottom: '-1px' }}>
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style={{ height: '30px' }}>
+      <defs>
+        <linearGradient id="footerWaveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="50%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#footerWaveGrad)"
+        d="M0,60 L0,20 Q360,0 720,25 T1440,15 L1440,60 Z"
+      />
+      <path
+        fill="#ffffff"
+        opacity="0.5"
+        d="M0,60 L0,35 Q280,10 560,30 T1120,20 T1440,30 L1440,60 Z"
+      />
+    </svg>
+  </div>
+);
+
+// Decorative floating orbs for background
+const FloatingOrbs = () => (
+  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-gradient-to-br from-[#1E4B8E]/[0.03] to-[#2A5BAD]/[0.05] blur-3xl animate-wave-float" />
+    <div className="absolute top-1/3 -left-20 w-48 h-48 rounded-full bg-gradient-to-tr from-[#C9A227]/[0.03] to-[#F0E5CF]/[0.05] blur-3xl animate-wave-float" style={{ animationDelay: '2s' }} />
+    <div className="absolute -bottom-20 right-1/4 w-56 h-56 rounded-full bg-gradient-to-tl from-[#1E4B8E]/[0.02] to-[#2A5BAD]/[0.04] blur-3xl animate-wave-float" style={{ animationDelay: '4s' }} />
+  </div>
+);
+
 const OperatorLayout = () => {
   return (
     <div className="min-h-screen bg-[#F7F6F2] flex flex-col font-sans text-[#1A1A2E] antialiased w-full relative">
+      <FloatingOrbs />
+      
       {/* Premium Header — Desktop & Mobile */}
       <header className="relative sticky top-0 z-30">
         {/* Animated gradient background */}
@@ -21,6 +80,12 @@ const OperatorLayout = () => {
           </div>
           {/* Top accent line */}
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+          
+          {/* Decorative curve line inside header */}
+          <svg className="absolute bottom-0 left-0 w-full opacity-[0.07]" viewBox="0 0 1440 40" preserveAspectRatio="none" style={{ height: '40px' }}>
+            <path d="M0,40 Q360,0 720,20 T1440,10" fill="none" stroke="white" strokeWidth="2" />
+            <path d="M0,30 Q480,5 960,25 T1440,15" fill="none" stroke="white" strokeWidth="1.5" className="animate-wave-shimmer" />
+          </svg>
         </div>
 
         {/* Glassmorphism overlay */}
@@ -69,8 +134,11 @@ const OperatorLayout = () => {
         <div className="absolute bottom-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </header>
 
+      {/* Elegant Curve below Header */}
+      <HeaderBottomWave />
+
       {/* Custom styles for animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.1; transform: scale(1); }
           50% { opacity: 0.2; transform: scale(1.05); }
@@ -85,12 +153,17 @@ const OperatorLayout = () => {
       `}</style>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-8 sm:pb-10">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-8 sm:pb-10 relative z-10">
         <Outlet />
       </main>
 
+      {/* Elegant Curve above Footer */}
+      <FooterTopWave />
+
       {/* Footer Sederhana */}
-      <footer className="bg-white border-t border-gray-200 py-3 text-center">
+      <footer className="bg-white border-t border-gray-100 py-3 text-center relative">
+        {/* Decorative accent dot */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1 rounded-full bg-gradient-to-r from-[#1E4B8E] to-[#C9A227] opacity-40" />
         <p className="text-[10px] sm:text-xs text-gray-400 font-medium">
           © {new Date().getFullYear()} PT. BESMINDO — Sistem Inspeksi Armada Digital v2.0
         </p>

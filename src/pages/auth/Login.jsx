@@ -48,38 +48,88 @@ const Login = () => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-6 font-sans antialiased text-[#1A1A2E] overflow-hidden">
-      {/* Background Foto Gedung PT. BESMINDO (Zoom Out, Jernih) */}
+      {/* Background Foto Gedung PT. BESMINDO */}
       <div className="absolute inset-0 bg-[#0d2242] pointer-events-none">
         <div
           className="absolute inset-0 bg-cover bg-[center_16%] bg-no-repeat"
           style={{ backgroundImage: "url('/bg-login.jpg')" }}
         />
-        {/* Lapisan overlay warna transparan halus (Bukan blur) agar teks & card terbaca tegas */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#091830]/55 via-[#1E4B8E]/30 to-[#091830]/65" />
+        {/* Lapisan overlay warna transparan halus agar teks & card terbaca tegas */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091830]/70 via-[#1E4B8E]/40 to-[#091830]/80" />
       </div>
 
-      {/* MAIN LOGIN CARD CONTAINER - Solid White Murni (Tanpa Efek Blur) */}
+      {/* Elegant Curved Ambient Waves & Orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+        {/* Floating curved orbs */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-[#1E4B8E]/30 to-[#2A5BAD]/10 blur-3xl animate-wave-float" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-tl from-[#C9A227]/20 to-[#1E4B8E]/20 blur-3xl animate-wave-float" style={{ animationDelay: '3s' }} />
+
+        {/* Large Elegant Background SVG Waves */}
+        <svg
+          className="absolute -bottom-10 left-0 w-full opacity-25 text-white pointer-events-none"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          style={{ height: '240px' }}
+        >
+          <path
+            fill="currentColor"
+            d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,122.7C672,128,768,192,864,208C960,224,1056,192,1152,165.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+        </svg>
+        <svg
+          className="absolute -bottom-4 left-0 w-full opacity-15 text-blue-300 pointer-events-none"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          style={{ height: '200px' }}
+        >
+          <path
+            fill="currentColor"
+            d="M0,64L48,96C96,128,192,192,288,197.3C384,203,480,149,576,144C672,139,768,181,864,197.3C960,213,1056,203,1152,176C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+        </svg>
+      </div>
+
+      {/* MAIN LOGIN CARD CONTAINER */}
       <div className="w-full max-w-[460px] relative z-10 my-auto py-6">
-        <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.35)] border border-[#C8C6C6] p-7 sm:p-9">
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.35)] border border-white/40 overflow-hidden relative">
           
-          {/* Logo & Header PT. Besmindo - ADMIN LOGIN */}
-          <div className="text-center mb-6">
-            <div className="flex items-center justify-center mb-3.5">
-              <img
-                src="/logo.png"
-                alt="BESMINDO Logo"
-                className="h-16 w-auto object-contain drop-shadow-sm"
-              />
+          {/* Elegant Top Header with Curved Wave Ribbon */}
+          <div className="relative bg-gradient-to-r from-[#162F5C] via-[#1E4B8E] to-[#2A5BAD] pt-8 pb-10 px-7 text-center overflow-hidden">
+            {/* Ambient glows inside card header */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-blue-300/20 blur-xl pointer-events-none" />
+            
+            {/* Logo in elegant curved badge */}
+            <div className="relative inline-flex items-center justify-center mb-3">
+              <div className="w-20 h-20 rounded-2xl bg-white p-2.5 shadow-xl shadow-black/20 border border-white/60 flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                <img
+                  src="/logo.png"
+                  alt="BESMINDO Logo"
+                  className="h-full w-auto object-contain drop-shadow-sm"
+                />
+              </div>
             </div>
             
-            <h1 className="text-2xl font-black text-[#1E4B8E] tracking-tight leading-tight">
+            <h1 className="text-2xl font-black text-white tracking-wide leading-tight drop-shadow-sm">
               PT. BESMINDO
             </h1>
-    
-            <p className="text-[10px] text-slate-500 font-medium mt-2">
+            <p className="text-xs text-blue-100/90 font-medium mt-1 tracking-wider uppercase">
               Portal Administrator HSE & Transport
             </p>
+
+            {/* Bottom Curve Wave inside Card Header */}
+            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+              <svg
+                viewBox="0 0 500 50"
+                preserveAspectRatio="none"
+                className="w-full h-7 text-white/95 fill-current"
+              >
+                <path d="M0,0 C150,50 350,50 500,0 L500,50 L0,50 Z" />
+              </svg>
+            </div>
           </div>
+
+          <div className="p-7 sm:p-8 pt-4">
 
           {/* Error Message */}
           {error && (
@@ -214,6 +264,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
