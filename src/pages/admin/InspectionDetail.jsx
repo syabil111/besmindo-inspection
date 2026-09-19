@@ -13,6 +13,7 @@ import {
   UsersIcon
 } from '../../components/Icons';
 import PrintableInspectionForm from '../../components/PrintableInspectionForm';
+import RepairStatusButton from '../../components/RepairStatusButton';
 
 const InspectionDetail = () => {
   const { id } = useParams();
@@ -65,8 +66,8 @@ const InspectionDetail = () => {
 
   if (!data) {
     return (
-      <div className="bg-white p-8 rounded-xl border border-gray-200 text-center">
-        <p className="text-gray-600">Inspeksi tidak ditemukan.</p>
+      <div className="bg-white p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+        <p className="text-gray-600 dark:text-gray-300">Inspeksi tidak ditemukan.</p>
         <button
           onClick={() => navigate('/admin/inspections')}
           className="mt-4 text-xs font-semibold text-[#1E4B8E] hover:underline"
@@ -98,14 +99,14 @@ const InspectionDetail = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => navigate('/admin/inspections')}
-            className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-gray-600 transition-colors"
+            className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 transition-colors"
             title="Kembali"
           >
             <ArrowLeftIcon className="w-4 h-4" />
           </button>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono text-gray-500">{data.form_code || 'BMSD/FORM'}</span>
+              <span className="text-xs font-mono text-gray-500 dark:text-gray-400">{data.form_code || 'BMSD/FORM'}</span>
               <span>•</span>
               <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold font-mono ${
                 data.shift === '1st' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'
@@ -138,9 +139,9 @@ const InspectionDetail = () => {
 
           <button
             onClick={() => setShowPrintModal(true)}
-            className="inline-flex items-center space-x-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition-colors"
+            className="inline-flex items-center space-x-1.5 bg-white hover:bg-gray-50 border border-gray-200 dark:border-gray-700 text-gray-700 px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition-colors"
           >
-            <PrintIcon className="w-4 h-4 text-gray-600" />
+            <PrintIcon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
             <span>Cetak Hardfile</span>
           </button>
         </div>
@@ -148,25 +149,25 @@ const InspectionDetail = () => {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Unit Kendaraan</span>
           <p className="text-base font-bold text-[#1E4B8E] mt-1">{data.vehicle_number || data.sn_engine}</p>
           <span className="text-[10px] text-gray-400">{data.vehicle_type || data.model || 'Alat Berat'}</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Nama Operator</span>
           <p className="text-base font-bold text-gray-900 mt-1">{data.operator_name || 'Operator Lapangan'}</p>
           <span className="text-[10px] text-gray-400">{data.department || 'Operasional'}</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Tanggal & Jam</span>
           <p className="text-base font-bold text-gray-900 mt-1">{data.inspection_date}</p>
           <span className="text-[10px] text-gray-400">{data.inspection_time || 'Jam tidak tercatat'}</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Kondisi Checklist</span>
           <div className="flex items-center space-x-2 mt-1">
             <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">
@@ -205,33 +206,33 @@ const InspectionDetail = () => {
       {/* Detail Header & Personal Documents */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Header Data Card */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-          <h3 className="font-bold text-sm text-[#1A1A2E] mb-3 pb-2 border-b border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
             Parameter Data Unit
           </h3>
           <dl className="grid grid-cols-2 gap-3 text-xs">
             <div>
-              <dt className="text-gray-500">Nomor Registrasi / SN:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Nomor Registrasi / SN:</dt>
               <dd className="font-semibold">{data.vehicle_number || data.sn_engine || '-'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Tipe / Model:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Tipe / Model:</dt>
               <dd className="font-semibold">{data.vehicle_type || data.model || '-'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Departemen / Rig:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Departemen / Rig:</dt>
               <dd className="font-semibold">{data.department || '-'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Lokasi:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Lokasi:</dt>
               <dd className="font-semibold">{data.location || '-'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Status Asset:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Status Asset:</dt>
               <dd className="font-semibold">{data.asset_status || 'Operasional'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Odometer / Jam Mesin:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Odometer / Jam Mesin:</dt>
               <dd className="font-semibold">
                 {data.km_reading_value ? `${data.km_reading_value} KM` : ''}
                 {data.running_hours ? `${data.running_hours} Hours` : ''}
@@ -239,25 +240,25 @@ const InspectionDetail = () => {
               </dd>
             </div>
             <div>
-              <dt className="text-gray-500">Masa Berlaku Pajak:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Masa Berlaku Pajak:</dt>
               <dd className="font-semibold">{data.exp_pajak || '-'}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Masa Berlaku KIUR:</dt>
+              <dt className="text-gray-500 dark:text-gray-400">Masa Berlaku KIUR:</dt>
               <dd className="font-semibold">{data.exp_kiur || '-'}</dd>
             </div>
           </dl>
         </div>
 
         {/* Personal Documents Card */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-          <h3 className="font-bold text-sm text-[#1A1A2E] mb-3 pb-2 border-b border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
             Dokumen Legalitas Pengemudi
           </h3>
           {data.documents && data.documents.length > 0 ? (
             <div className="space-y-3 text-xs">
               {data.documents.map((doc, idx) => (
-                <div key={idx} className="p-2.5 bg-gray-50 rounded-lg border border-gray-100">
+                <div key={idx} className="p-2.5 bg-gray-50 rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="font-bold text-[#1E4B8E]">{doc.doc_type?.replace('_', ' ')}</div>
                   <div className="flex justify-between mt-1 text-gray-700">
                     <span>No (1st): <strong>{doc.doc_number_1st || '-'}</strong></span>
@@ -281,12 +282,12 @@ const InspectionDetail = () => {
       </div>
 
       {/* Categorized Checklist Results */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="p-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-          <h3 className="font-bold text-sm text-[#1A1A2E]">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div className="p-4 bg-gray-50 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white">
             Detail Lembar Checklist Pemeriksaan
           </h3>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             Total {results.length} Item Diperiksa
           </span>
         </div>
@@ -305,8 +306,8 @@ const InspectionDetail = () => {
                       item.condition === 'broken'
                         ? 'bg-red-50/60 border-red-200'
                         : item.condition === 'good'
-                        ? 'bg-white border-gray-200'
-                        : 'bg-gray-50 border-gray-200'
+                        ? 'bg-white border-gray-200 dark:border-gray-700'
+                        : 'bg-gray-50 border-gray-200 dark:border-gray-700'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -317,9 +318,25 @@ const InspectionDetail = () => {
                         </span>
                       )}
                       {item.condition === 'broken' && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 flex-shrink-0">
-                          <WarningIcon className="w-3 h-3 mr-1" /> RUSAK
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 flex-shrink-0">
+                            <WarningIcon className="w-3 h-3 mr-1" /> RUSAK
+                          </span>
+                          <span className="text-[10px] text-gray-400">|</span>
+                          <RepairStatusButton 
+                            resultId={item.id}
+                            currentStatus={item.repair_status}
+                            onStatusUpdate={(resultId, newStatus) => {
+                              // Update local state
+                              const updatedData = { ...data };
+                              const updatedResults = updatedData.results.map(r =>
+                                r.id === resultId ? { ...r, repair_status: newStatus } : r
+                              );
+                              updatedData.results = updatedResults;
+                              setData(updatedData);
+                            }}
+                          />
+                        </div>
                       )}
                       {item.condition === 'na' && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 text-gray-700 flex-shrink-0">
@@ -343,9 +360,9 @@ const InspectionDetail = () => {
       {/* Modal Print Preview */}
       {showPrintModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
-              <h3 className="font-bold text-sm text-[#1A1A2E]">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between sticky top-0 bg-white z-10">
+              <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white">
                 Format Cetak Resmi Hardfile PT. BESMINDO
               </h3>
               <div className="flex items-center space-x-2">

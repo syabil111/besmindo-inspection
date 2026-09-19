@@ -160,7 +160,7 @@ const FormManagement = () => {
   if (formTypes.length === 0 && !loading) {
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm p-12 text-center">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-[#E5E7EB] dark:border-gray-800 shadow-sm p-12 text-center">
           <FormChecklistIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-bold text-gray-900 mb-2">Belum Ada Jenis Formulir</h3>
           <p className="text-sm text-gray-500 mb-6">
@@ -183,16 +183,16 @@ const FormManagement = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A2E] tracking-tight">
+          <h1 className="text-3xl font-extrabold text-[#162F5C] dark:text-white tracking-tight">
             Kelola Formulir & Checklist Item
           </h1>
-          <p className="text-xs text-[#6B7280] mt-0.5">
+          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">
             Pengaturan standar checklist inspeksi harian per jenis alat/kendaraan PT. BESMINDO
           </p>
         </div>
         <button
           onClick={() => setShowCategoryModal(true)}
-          className="inline-flex items-center space-x-1.5 bg-[#1E4B8E] hover:bg-[#2E6BC4] text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition-colors"
+          className="inline-flex items-center space-x-1.5 bg-[#162F5C] hover:bg-[#1E4B8E] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm transition-all"
         >
           <PlusIcon className="w-4 h-4" />
           <span>Tambah Kategori Baru</span>
@@ -200,7 +200,7 @@ const FormManagement = () => {
       </div>
 
       {/* Dropdown Pemilihan Jenis Formulir dengan Search */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E7EB] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E7EB] dark:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="w-full md:max-w-xl">
           <SearchableDropdown
             label="Pilih Jenis Formulir Inspeksi"
@@ -227,20 +227,20 @@ const FormManagement = () => {
       </div>
 
       {/* Search Box untuk Cari Item Checklist */}
-      <div className="bg-white rounded-xl p-4 border border-[#E5E7EB] shadow-sm">
+      <div className="bg-white dark:bg-gray-900 rounded-xl p-4 border border-[#E5E7EB] dark:border-gray-800 shadow-sm">
         <div className="relative">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="🔍 Cari item checklist... (Contoh: lampu, ban, rem, oli, dll)"
-            className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E] focus:border-[#1E4B8E] focus:outline-none"
+            className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E] focus:border-[#1E4B8E] focus:outline-none"
           />
           <SearchIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:text-gray-300"
             >
               ✕
             </button>
@@ -255,13 +255,13 @@ const FormManagement = () => {
 
       {/* Checklist per Kategori */}
       {loading ? (
-        <div className="flex items-center justify-center h-64 bg-white rounded-xl border border-gray-200">
+        <div className="flex items-center justify-center h-64 bg-white rounded-xl border border-gray-200 dark:border-gray-700">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E4B8E]"></div>
         </div>
       ) : (
         <div className="space-y-5">
           {categories.length === 0 ? (
-            <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-xs text-gray-500">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-8 text-center text-xs text-gray-500 dark:text-gray-400">
               Belum ada kategori checklist untuk formulir ini.
             </div>
           ) : (
@@ -277,8 +277,8 @@ const FormManagement = () => {
               if (searchQuery && filteredItems.length === 0) return null;
 
               return (
-                <div key={category.id} className="bg-white rounded-xl border border-[#E5E7EB] shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-                  <div className="p-4 bg-gray-50/70 border-b border-gray-200 flex items-center justify-between">
+                <div key={category.id} className="bg-white dark:bg-gray-900 rounded-xl border border-[#E5E7EB] dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+                  <div className="p-4 bg-gray-50/70 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#1E4B8E]"></span>
                       <h3 className="font-bold text-xs uppercase tracking-wide text-[#1A1A2E]">
@@ -294,7 +294,7 @@ const FormManagement = () => {
                     </button>
                   </div>
 
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-slate-100 dark:divide-gray-800">
                   {filteredItems && filteredItems.length > 0 ? (
                     filteredItems.map((item, idx) => {
                       // Highlight search term
@@ -403,20 +403,20 @@ const FormManagement = () => {
       {/* Modal Item */}
       {showItemModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-md w-full p-5 text-xs">
-            <h3 className="font-bold text-sm text-[#1A1A2E] mb-3 pb-2 border-b border-gray-100">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-md w-full p-5 text-xs">
+            <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
               {editingItem ? 'Edit Item Checklist' : `Tambah Item Checklist ke "${targetCategory?.name}"`}
             </h3>
             <form onSubmit={handleSaveItem} className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">Deskripsi Item Pemeriksaan</label>
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Deskripsi Item Pemeriksaan</label>
                 <textarea
                   rows="3"
                   value={itemDescription}
                   onChange={(e) => setItemDescription(e.target.value)}
                   placeholder="Contoh: Sabuk Pengaman Operator / Kaca Spion Kiri & Kanan"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
                 />
               </div>
               <div className="flex justify-end space-x-2 pt-2">
@@ -442,20 +442,20 @@ const FormManagement = () => {
       {/* Modal Add Category */}
       {showCategoryModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-md w-full p-5 text-xs">
-            <h3 className="font-bold text-sm text-[#1A1A2E] mb-3 pb-2 border-b border-gray-100">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-md w-full p-5 text-xs">
+            <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
               Tambah Kategori Checklist ({currentFormType?.name})
             </h3>
             <form onSubmit={handleAddCategory} className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">Nama Kategori</label>
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Nama Kategori</label>
                 <input
                   type="text"
                   value={categoryName}
                   onChange={(e) => setCategoryName(e.target.value)}
                   placeholder="Contoh: D. Bagian Khusus / Sistem Pengereman"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
                 />
               </div>
               <div className="flex justify-end space-x-2 pt-2">

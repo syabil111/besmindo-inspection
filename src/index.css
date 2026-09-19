@@ -201,10 +201,6 @@
     display: none !important;
   }
   
-  .print-only {
-    display: block !important;
-  }
-
   .curve-separator,
   .card-curve-accent::before,
   .topbar-curve-shadow::after,
@@ -212,3 +208,74 @@
     display: none !important;
   }
 }
+
+/* ========================================================================= */
+/* LIVE AMBIENT AURORA & GRID EFFECTS (getlayers.ai inspired)                 */
+/* ========================================================================= */
+@keyframes liveBlob1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(80px, -60px) scale(1.15) rotate(12deg);
+  }
+  66% {
+    transform: translate(-50px, 70px) scale(0.92) rotate(-8deg);
+  }
+}
+
+@keyframes liveBlob2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-90px, 60px) scale(1.2) rotate(-15deg);
+  }
+  66% {
+    transform: translate(60px, -40px) scale(0.88) rotate(10deg);
+  }
+}
+
+@keyframes liveBlob3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(40px, 40px) scale(1.25);
+    opacity: 0.65;
+  }
+}
+
+@keyframes gridPulse {
+  0%, 100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.animate-live-blob-1 {
+  animation: liveBlob1 18s ease-in-out infinite;
+}
+
+.animate-live-blob-2 {
+  animation: liveBlob2 22s ease-in-out infinite;
+}
+
+.animate-live-blob-3 {
+  animation: liveBlob3 14s ease-in-out infinite;
+}
+
+.animate-grid-pulse {
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+.login-interactive-grid {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+

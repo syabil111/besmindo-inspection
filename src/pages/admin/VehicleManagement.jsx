@@ -151,14 +151,14 @@ const VehicleManagement = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A2E] tracking-tight">Master Data Kendaraan & Alat Berat</h1>
-          <p className="text-xs text-[#6B7280] mt-0.5">
+          <h1 className="text-3xl font-extrabold text-[#162F5C] dark:text-white tracking-tight">Master Data Kendaraan & Alat Berat</h1>
+          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">
             Daftar armada dan unit yang tersedia pada pilihan dropdown pengisian formulir operator
           </p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center space-x-1.5 bg-[#1E4B8E] hover:bg-[#2E6BC4] text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition-colors"
+          className="inline-flex items-center space-x-1.5 bg-[#162F5C] hover:bg-[#1E4B8E] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm transition-all"
         >
           <PlusIcon className="w-4 h-4" />
           <span>Tambah Unit Baru</span>
@@ -166,14 +166,14 @@ const VehicleManagement = () => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div className="relative w-full sm:w-80">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari nopol, tipe, departemen, asset..."
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] focus:outline-none transition-all"
+            className="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] focus:outline-none transition-all"
           />
           <SearchIcon className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5" />
         </div>
@@ -183,7 +183,7 @@ const VehicleManagement = () => {
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="px-2.5 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] focus:outline-none transition-all"
+            className="px-2.5 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] focus:outline-none transition-all"
           >
             <option value="">Semua Jenis Form</option>
             {formTypes.map(ft => (
@@ -194,55 +194,55 @@ const VehicleManagement = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200 text-[#6B7280] font-semibold">
-                <th className="py-3 px-4">No. Registrasi / SN</th>
-                <th className="py-3 px-4">Tipe Kendaraan / Model</th>
-                <th className="py-3 px-4">Peruntukan Formulir</th>
-                <th className="py-3 px-4">Departemen / Rig</th>
-                <th className="py-3 px-4">No. Asset BMS</th>
-                <th className="py-3 px-4">Status Operasional</th>
+              <tr className="border-b border-slate-100 dark:border-gray-800 text-slate-400 dark:text-gray-500 font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-3.5 px-5">No. Registrasi / SN</th>
+                <th className="py-3.5 px-5">Tipe Kendaraan / Model</th>
+                <th className="py-3.5 px-5">Peruntukan Formulir</th>
+                <th className="py-3.5 px-5">Departemen / Rig</th>
+                <th className="py-3.5 px-5">No. Asset BMS</th>
+                <th className="py-3.5 px-5">Status Operasional</th>
                 <th className="py-3 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="py-12 text-center text-gray-500">
+                  <td colSpan="7" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E4B8E] mx-auto"></div>
                     <p className="mt-2 text-xs">Memuat data kendaraan...</p>
                   </td>
                 </tr>
               ) : filteredVehicles.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="py-12 text-center text-gray-500">
+                  <td colSpan="7" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     Tidak ada unit kendaraan yang cocok.
                   </td>
                 </tr>
               ) : (
                 filteredVehicles.map((vehicle) => (
-                  <tr key={vehicle.id} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-3.5 px-4">
+                  <tr key={vehicle.id} className="hover:bg-slate-50/80 dark:hover:bg-gray-800/50 transition-colors">
+                    <td className="py-3.5 px-5">
                       <div className="font-bold text-[#1E4B8E]">{vehicle.vehicle_number}</div>
                     </td>
-                    <td className="py-3.5 px-4 font-medium text-gray-800">
+                    <td className="py-3.5 px-5 font-medium text-slate-800 dark:text-white">
                       {vehicle.vehicle_type || '-'}
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-5">
                       <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-gray-800">
                         {getFormTypeLabel(vehicle.form_type)}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-gray-600">
+                    <td className="py-3.5 px-4 text-gray-600 dark:text-gray-300">
                       {vehicle.department || '-'}
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-[11px] text-gray-600">
+                    <td className="py-3.5 px-4 font-mono text-[11px] text-gray-600 dark:text-gray-300">
                       {vehicle.asset_bms_no || '-'}
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-5">
                       <button
                         onClick={() => handleToggleActive(vehicle)}
                         className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold cursor-pointer transition-all ${
@@ -255,7 +255,7 @@ const VehicleManagement = () => {
                         {vehicle.is_active ? 'Aktif (Muncul di Form)' : 'Nonaktif'}
                       </button>
                     </td>
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-3.5 px-5 text-center">
                       <div className="flex items-center justify-center space-x-1">
                         <button
                           onClick={() => handleOpenModal(vehicle)}
@@ -284,7 +284,7 @@ const VehicleManagement = () => {
       {/* Modal Add / Edit Vehicle */}
       {showModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-lg w-full p-6 animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-lg w-full p-6 animate-in fade-in duration-200">
             <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-4">
               <h3 className="font-bold text-base text-[#1A1A2E]">
                 {editingVehicle ? 'Edit Data Kendaraan / Unit' : 'Tambah Unit Baru'}
@@ -299,7 +299,7 @@ const VehicleManagement = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Nomor Polisi / S/N Unit <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -308,12 +308,12 @@ const VehicleManagement = () => {
                   onChange={(e) => setFormData({ ...formData, vehicle_number: e.target.value })}
                   placeholder="Contoh: BK 1234 AB atau DZ-01"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Tipe / Seri Unit
                 </label>
                 <SearchableDropdown
@@ -326,7 +326,7 @@ const VehicleManagement = () => {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Peruntukan Jenis Formulir <span className="text-red-500">*</span>
                 </label>
                 {formTypes.length === 0 ? (
@@ -338,7 +338,7 @@ const VehicleManagement = () => {
                   <select
                     value={formData.form_type}
                     onChange={(e) => setFormData({ ...formData, form_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
                   >
                     {formTypes.map(ft => (
                       <option key={ft.type_key} value={ft.type_key}>
@@ -351,7 +351,7 @@ const VehicleManagement = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">Departemen / Rig</label>
+                  <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Departemen / Rig</label>
                   <SearchableDropdown
                     options={departments.map(d => ({ value: d.name, label: d.name, sublabel: d.code }))}
                     value={formData.department}
@@ -361,13 +361,13 @@ const VehicleManagement = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">No. Asset BMS</label>
+                  <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">No. Asset BMS</label>
                   <input
                     type="text"
                     value={formData.asset_bms_no}
                     onChange={(e) => setFormData({ ...formData, asset_bms_no: e.target.value })}
                     placeholder="Contoh: BMS-LV-01"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-1 focus:ring-[#1E4B8E] focus:outline-none"
                   />
                 </div>
               </div>
@@ -385,7 +385,7 @@ const VehicleManagement = () => {
                 </label>
               </div>
 
-              <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-gray-800">
                 <button
                   type="button"
                   onClick={handleCloseModal}

@@ -113,14 +113,14 @@ const FormTypeManagement = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A2E] tracking-tight">Master Jenis Formulir Inspeksi</h1>
-          <p className="text-xs text-[#6B7280] mt-0.5">
+          <h1 className="text-3xl font-extrabold text-[#162F5C] dark:text-white tracking-tight">Master Jenis Formulir Inspeksi</h1>
+          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">
             Kelola jenis formulir inspeksi (Dozer, Bus, Crane, Forklift, dll). Formulir baru otomatis muncul di sistem.
           </p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center space-x-1.5 bg-[#1E4B8E] hover:bg-[#2E6BC4] text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition-colors"
+          className="inline-flex items-center space-x-1.5 bg-[#162F5C] hover:bg-[#1E4B8E] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm transition-all"
         >
           <PlusIcon className="w-4 h-4" />
           <span>Tambah Jenis Formulir Baru</span>
@@ -128,66 +128,66 @@ const FormTypeManagement = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
         <div className="relative">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari nama formulir, kode, atau type key..."
-            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E] focus:outline-none"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E] focus:outline-none"
           />
           <SearchIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200 text-[#6B7280] font-semibold">
-                <th className="py-3 px-4">Nama Formulir</th>
-                <th className="py-3 px-4">Kode Formulir</th>
-                <th className="py-3 px-4">Type Key (URL)</th>
-                <th className="py-3 px-4">Total Kategori</th>
+              <tr className="border-b border-slate-100 dark:border-gray-800 text-slate-400 dark:text-gray-500 font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-3.5 px-5">Nama Formulir</th>
+                <th className="py-3.5 px-5">Kode Formulir</th>
+                <th className="py-3.5 px-5">Type Key (URL)</th>
+                <th className="py-3.5 px-5">Total Kategori</th>
                 <th className="py-3 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="py-12 text-center text-gray-500">
+                  <td colSpan="5" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E4B8E] mx-auto"></div>
                     <p className="mt-2 text-xs">Memuat data...</p>
                   </td>
                 </tr>
               ) : filteredFormTypes.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="py-12 text-center text-gray-500">
+                  <td colSpan="5" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     {search ? 'Tidak ada formulir yang cocok dengan pencarian.' : 'Belum ada jenis formulir. Klik "Tambah Jenis Formulir Baru" untuk mulai.'}
                   </td>
                 </tr>
               ) : (
                 filteredFormTypes.map((formType) => (
-                  <tr key={formType.id} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-3.5 px-4">
+                  <tr key={formType.id} className="hover:bg-slate-50/80 dark:hover:bg-gray-800/50 transition-colors">
+                    <td className="py-3.5 px-5">
                       <div className="font-bold text-[#1E4B8E]">{formType.name}</div>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-5">
                       <span className="font-mono text-[11px] text-gray-600 bg-gray-100 px-2 py-1 rounded">
                         {formType.code}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-5">
                       <span className="font-mono text-[11px] font-semibold text-gray-800">
                         {formType.type_key}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-gray-600">
+                    <td className="py-3.5 px-4 text-gray-600 dark:text-gray-300">
                       {formType.category_count || 0} kategori
                     </td>
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-3.5 px-5 text-center">
                       <div className="flex items-center justify-center space-x-1">
                         <button
                           onClick={() => handleOpenModal(formType)}
@@ -234,7 +234,7 @@ const FormTypeManagement = () => {
       {/* Modal Add / Edit Form Type */}
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-lg w-full p-6">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-lg w-full p-6">
             <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-4">
               <h3 className="font-bold text-base text-[#1A1A2E]">
                 {editingFormType ? 'Edit Jenis Formulir' : 'Tambah Jenis Formulir Baru'}
@@ -249,7 +249,7 @@ const FormTypeManagement = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Nama Formulir <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -258,12 +258,12 @@ const FormTypeManagement = () => {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Contoh: Crane Mobile 50 Ton"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Kode Formulir PT. BESMINDO <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -272,13 +272,13 @@ const FormTypeManagement = () => {
                   onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                   placeholder="Contoh: BMSD/05/FO/HSE/01/24"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none font-mono text-xs"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none font-mono text-xs"
                 />
                 <p className="text-[10px] text-gray-500 mt-1">Format: BMSD/[No]/FO/[Dept]/[Seq]/[Year]</p>
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
+                <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
                   Type Key (URL Slug) <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -288,7 +288,7 @@ const FormTypeManagement = () => {
                   placeholder="Contoh: crane_mobile atau forklift_3t"
                   required
                   disabled={!!editingFormType}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none font-mono text-xs disabled:bg-gray-100"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none font-mono text-xs disabled:bg-gray-100"
                 />
                 <p className="text-[10px] text-gray-500 mt-1">
                   {editingFormType 
@@ -298,7 +298,7 @@ const FormTypeManagement = () => {
               </div>
 
 
-              <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-gray-800">
                 <button
                   type="button"
                   onClick={handleCloseModal}

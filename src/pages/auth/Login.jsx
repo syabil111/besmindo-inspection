@@ -41,230 +41,206 @@ const Login = () => {
 
     const result = await login(formData);
     if (!result.success) {
-      setError(result.message);
+      setError(result.message || 'Username atau password salah.');
       setLoading(false);
     }
   };
 
+  // Quick helper to fill admin credentials
+  const fillAdminCredentials = () => {
+    setFormData({
+      username: 'admin',
+      password: 'admin123'
+    });
+    setError('');
+  };
+
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-6 font-sans antialiased text-[#1A1A2E] overflow-hidden">
-      {/* Background Foto Gedung PT. BESMINDO */}
-      <div className="absolute inset-0 bg-[#0d2242] pointer-events-none">
+    <div className="min-h-screen relative flex items-center justify-center p-4 font-sans text-slate-800 overflow-hidden">
+      {/* Background Foto Gedung PT. BESMINDO Seimbang & User Friendly */}
+      <div className="absolute inset-0 bg-[#0d2242] pointer-events-none overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-[center_16%] bg-no-repeat"
-          style={{ backgroundImage: "url('/bg-login.jpg')" }}
+          className="absolute inset-0 bg-cover bg-[center_55%] bg-no-repeat transition-all duration-300"
+          style={{ 
+            backgroundImage: "url('/bg-login.jpg')",
+            filter: "contrast(105%) brightness(96%) saturate(104%)"
+          }}
         />
-        {/* Lapisan overlay warna transparan halus agar teks & card terbaca tegas */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#091830]/70 via-[#1E4B8E]/40 to-[#091830]/80" />
+        {/* Overlay lembut proporsional agar foto tampak jelas dan teks login mudah dibaca */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/45" />
       </div>
 
-      {/* Elegant Curved Ambient Waves & Orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
-        {/* Floating curved orbs */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-[#1E4B8E]/30 to-[#2A5BAD]/10 blur-3xl animate-wave-float" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-tl from-[#C9A227]/20 to-[#1E4B8E]/20 blur-3xl animate-wave-float" style={{ animationDelay: '3s' }} />
+      <div className="w-full max-w-md relative z-10 my-auto">
+        {/* Card Login Sederhana & Bersih */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
 
-        {/* Large Elegant Background SVG Waves */}
-        <svg
-          className="absolute -bottom-10 left-0 w-full opacity-25 text-white pointer-events-none"
-          viewBox="0 0 1440 320"
-          preserveAspectRatio="none"
-          style={{ height: '240px' }}
-        >
-          <path
-            fill="currentColor"
-            d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,122.7C672,128,768,192,864,208C960,224,1056,192,1152,165.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          />
-        </svg>
-        <svg
-          className="absolute -bottom-4 left-0 w-full opacity-15 text-blue-300 pointer-events-none"
-          viewBox="0 0 1440 320"
-          preserveAspectRatio="none"
-          style={{ height: '200px' }}
-        >
-          <path
-            fill="currentColor"
-            d="M0,64L48,96C96,128,192,192,288,197.3C384,203,480,149,576,144C672,139,768,181,864,197.3C960,213,1056,203,1152,176C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          />
-        </svg>
-      </div>
-
-      {/* MAIN LOGIN CARD CONTAINER */}
-      <div className="w-full max-w-[460px] relative z-10 my-auto py-6">
-        <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.35)] border border-white/40 overflow-hidden relative">
-          
-          {/* Elegant Top Header with Curved Wave Ribbon */}
-          <div className="relative bg-gradient-to-r from-[#162F5C] via-[#1E4B8E] to-[#2A5BAD] pt-8 pb-10 px-7 text-center overflow-hidden">
-            {/* Ambient glows inside card header */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-blue-300/20 blur-xl pointer-events-none" />
-            
-            {/* Logo in elegant curved badge */}
-            <div className="relative inline-flex items-center justify-center mb-3">
-              <div className="w-20 h-20 rounded-2xl bg-white p-2.5 shadow-xl shadow-black/20 border border-white/60 flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/logo.png"
-                  alt="BESMINDO Logo"
-                  className="h-full w-auto object-contain drop-shadow-sm"
-                />
-              </div>
+          {/* Header Sederhana — Warna Senada Sidebar Admin & Header Operator (#162F5C) */}
+          <div className="bg-[#162F5C] text-white p-6 sm:p-7 text-center relative">
+            {/* Garis Aksen Emas/Biru Khas Besmindo di Bawah Header Card */}
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-400 via-amber-400/80 to-blue-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-xl shadow p-2 mb-3">
+              <img
+                src="/logo-besmindo.png"
+                alt="PT BESMINDO MATERI SEWATAMA"
+                className="h-full w-auto object-contain"
+              />
             </div>
-            
-            <h1 className="text-2xl font-black text-white tracking-wide leading-tight drop-shadow-sm">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               PT. BESMINDO
             </h1>
-            <p className="text-xs text-blue-100/90 font-medium mt-1 tracking-wider uppercase">
-              Portal Administrator HSE & Transport
+            <p className="text-xs text-blue-200 mt-0.5 font-semibold tracking-wide uppercase">
+              MATERI SEWATAMA
             </p>
-
-            {/* Bottom Curve Wave inside Card Header */}
-            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
-              <svg
-                viewBox="0 0 500 50"
-                preserveAspectRatio="none"
-                className="w-full h-7 text-white/95 fill-current"
-              >
-                <path d="M0,0 C150,50 350,50 500,0 L500,50 L0,50 Z" />
-              </svg>
-            </div>
           </div>
-
-          <div className="p-7 sm:p-8 pt-4">
-
-          {/* Error Message */}
-          {error && (
-            <div className="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium flex items-center gap-2.5">
-              <svg className="w-4 h-4 flex-shrink-0 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-              <span>{error}</span>
-            </div>
-          )}
 
           {/* Form Login */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Username Input */}
-            <div>
-              <label className="block text-slate-700 font-bold text-xs mb-1.5">
-                Username Akun
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  placeholder="Masukkan username Anda"
-                  required
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#F7F6F2] border border-[#C8C6C6] rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#1E4B8E]/25 focus:border-[#1E4B8E] focus:outline-none transition-all"
-                />
-              </div>
+          <div className="p-6 sm:p-7 space-y-5">
+            <div className="text-center">
+              <h2 className="text-base font-semibold text-slate-800">Login Administrator</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Silakan masukkan akun Anda untuk mengelola sistem</p>
             </div>
 
-            {/* Password Input */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-slate-700 font-bold text-xs">
+            {/* Pesan Error */}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg flex items-center gap-2">
+                <svg className="w-4 h-4 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                  <line x1="12" y1="8" x2="12" y2="12" strokeWidth="2" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" strokeWidth="2" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Username */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Username
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="Masukkan username"
+                    required
+                    className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#162F5C]/30 focus:border-[#162F5C] focus:outline-none transition"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Password
                 </label>
-                <span className="text-[11px] text-slate-400 hover:text-[#1E4B8E] transition-colors cursor-pointer">
-                  Lupa password?
-                </span>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Masukkan password"
+                    required
+                    className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#162F5C]/30 focus:border-[#162F5C] focus:outline-none transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                    aria-label="Lihat password"
+                  >
+                    {showPassword ? (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Masukkan password Anda"
-                  required
-                  className="w-full pl-10 pr-10 py-2.5 bg-[#F7F6F2] border border-[#C8C6C6] rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#1E4B8E]/25 focus:border-[#1E4B8E] focus:outline-none transition-all"
-                />
+              </div>
+
+              {/* Ingat Saya & Quick Auto-fill Demo */}
+              <div className="flex items-center justify-between text-xs pt-1">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-3.5 h-3.5 text-[#162F5C] border-slate-300 rounded focus:ring-[#162F5C]"
+                  />
+                  <span className="text-slate-600">Ingat saya</span>
+                </label>
+
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                  aria-label={showPassword ? 'Sembunyikan password' : 'Lihat password'}
+                  onClick={fillAdminCredentials}
+                  className="text-xs text-[#162F5C] hover:underline font-semibold cursor-pointer"
                 >
-                  {showPassword ? (
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                      <line x1="1" y1="1" x2="23" y2="23" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                  Isi Akun Demo
                 </button>
               </div>
-            </div>
 
-            {/* Remember Me & SSL Trust */}
-            <div className="flex items-center justify-between pt-0.5">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 text-[#1E4B8E] border-[#C8C6C6] rounded focus:ring-[#1E4B8E]/30 cursor-pointer"
-                />
-                <span className="text-xs font-semibold text-slate-600">Ingat Saya</span>
-              </label>
-              <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                <svg className="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              {/* Tombol Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 bg-[#162F5C] hover:bg-[#112447] active:bg-[#0c1a33] text-white rounded-lg font-semibold text-sm shadow transition duration-150 disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    <span>Memproses...</span>
+                  </>
+                ) : (
+                  <span>Masuk</span>
+                )}
+              </button>
+            </form>
+
+            {/* Quick Link ke Halaman Operator */}
+            <div className="pt-3 border-t border-slate-100 text-center">
+              <p className="text-xs text-slate-500 mb-2">
+                Operator Lapangan tidak perlu login:
+              </p>
+              <Link
+                to="/"
+                className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#162F5C] bg-slate-100 hover:bg-slate-200/80 px-3.5 py-2 rounded-lg border border-slate-200 transition"
+              >
+                <span>Buka Formulir Inspeksi Operator</span>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
-                SSL 256-bit
-              </span>
+              </Link>
             </div>
-
-            {/* Tombol Masuk / Login */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-[#1E4B8E] hover:bg-[#163A6E] active:bg-[#112D57] text-white rounded-xl font-bold text-sm shadow-md shadow-[#1E4B8E]/25 transition-all duration-200 active:scale-[0.99] disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <svg className="w-4 h-4 animate-spin text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  <span>Memverifikasi...</span>
-                </>
-              ) : (
-                <span>Masuk / Login</span>
-              )}
-            </button>
-          </form>
-
-          {/* Corporate Footer Signature */}
-          <div className="mt-6 pt-4 border-t border-[#C8C6C6]/40 text-center">
-            <p className="text-[10px] text-slate-400 font-medium tracking-wide">
-              PT. BESMINDO MATERI SEWATAMA
-            </p>
           </div>
         </div>
+
+        {/* Footer Sederhana */}
+        <p className="text-center text-[11px] text-blue-200/80 font-medium mt-4">
+          © {new Date().getFullYear()} PT. Besmindo Materi Sewatama
+        </p>
       </div>
     </div>
-  </div>
   );
 };
 

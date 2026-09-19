@@ -110,7 +110,7 @@ const Departments = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
+      <div className="bg-white rounded-lg p-4 border border-gray-200 dark:border-gray-700">
         <div className="relative">
           <input
             type="text"
@@ -123,42 +123,42 @@ const Departments = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="border-b border-slate-100 dark:border-gray-800">
               <tr>
                 <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Nama Department</th>
                 <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Kode</th>
                 <th className="py-3 px-4 text-center text-sm font-semibold text-gray-700">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
               {loading ? (
                 <tr>
-                  <td colSpan="3" className="py-12 text-center text-gray-500">
+                  <td colSpan="3" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1E4B8E] mx-auto mb-2"></div>
                     <p className="text-sm">Memuat data...</p>
                   </td>
                 </tr>
               ) : filteredDepts.length === 0 ? (
                 <tr>
-                  <td colSpan="3" className="py-12 text-center text-gray-500">
+                  <td colSpan="3" className="py-12 text-center text-gray-500 dark:text-gray-400">
                     {search ? 'Tidak ada department yang cocok.' : 'Belum ada data department.'}
                   </td>
                 </tr>
               ) : (
                 filteredDepts.map((dept) => (
                   <tr key={dept.id} className="hover:bg-gray-50">
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <span className="font-medium text-gray-900">{dept.name}</span>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <span className="text-sm font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded">
                         {dept.code || '-'}
                       </span>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <div className="flex items-center justify-center space-x-2">
                         <button
                           onClick={() => handleOpenModal(dept)}
@@ -189,7 +189,7 @@ const Departments = () => {
               <h3 className="text-lg font-bold text-gray-900">
                 {editingDept ? 'Edit Department' : 'Tambah Department'}
               </h3>
-              <button onClick={handleCloseModal} className="text-gray-400 hover:text-gray-600">
+              <button onClick={handleCloseModal} className="text-gray-400 hover:text-gray-600 dark:text-gray-300">
                 ✕
               </button>
             </div>

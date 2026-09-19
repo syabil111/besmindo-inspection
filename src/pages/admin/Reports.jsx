@@ -778,37 +778,14 @@ const Reports = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A2E] tracking-tight">Laporan & Cetak Hardfile</h1>
-          <p className="text-xs text-[#6B7280] mt-0.5">
+          <h1 className="text-3xl font-extrabold text-[#162F5C] dark:text-white tracking-tight">Laporan & Cetak Hardfile</h1>
+          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">
             Rekap statistik inspeksi, export format Excel/PDF, dan cetak fisik formulir asli PT. BESMINDO
           </p>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          {/* Live Clock Widget */}
-          <div className="bg-gradient-to-br from-[#162F5C] to-[#1E4B8E] text-white px-5 py-3 rounded-2xl shadow-lg shadow-blue-900/20 border border-white/10">
-            <div className="flex items-center gap-3">
-              <div className="text-center">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-200 opacity-80">
-                  {liveTime.toLocaleDateString('id-ID', { weekday: 'long' })}
-                </p>
-                <p className="text-2xl font-black font-mono tracking-tight leading-none mt-0.5">
-                  {liveTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
-                </p>
-                <p className="text-[10px] font-medium text-blue-200 mt-0.5">
-                  {liveTime.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })} WIB
-                </p>
-              </div>
-              <div className="w-px h-10 bg-white/20" />
-              <div className="flex flex-col items-center">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400" />
-                </span>
-                <span className="text-[9px] font-bold tracking-wider text-green-300 mt-1">LIVE</span>
-              </div>
-            </div>
-          </div>
+
 
           {/* Export Buttons */}
           <div className="flex items-center space-x-2">
@@ -833,8 +810,8 @@ const Reports = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-xl p-4 border border-[#E5E7EB] shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center space-x-2 text-xs font-bold text-[#1A1A2E] mb-3 uppercase tracking-wider">
+      <div className="bg-white dark:bg-gray-900 rounded-3xl p-5 border border-slate-200/80 dark:border-gray-800 shadow-xs">
+        <div className="flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-white mb-4 uppercase tracking-widest">
           <FilterIcon className="w-3.5 h-3.5 text-[#1E4B8E]" />
           <span>Kriteria Filter Laporan</span>
         </div>
@@ -845,7 +822,7 @@ const Reports = () => {
               type="date"
               value={filters.date_from}
               onChange={(e) => setFilters({ ...filters, date_from: e.target.value })}
-              className="w-full px-2.5 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+              className="w-full px-2.5 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
             />
           </div>
           <div>
@@ -854,7 +831,7 @@ const Reports = () => {
               type="date"
               value={filters.date_to}
               onChange={(e) => setFilters({ ...filters, date_to: e.target.value })}
-              className="w-full px-2.5 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+              className="w-full px-2.5 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
             />
           </div>
           <div>
@@ -862,7 +839,7 @@ const Reports = () => {
             <select
               value={filters.form_type}
               onChange={(e) => setFilters({ ...filters, form_type: e.target.value })}
-              className="w-full px-2.5 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+              className="w-full px-2.5 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
             >
               <option value="">Semua Formulir</option>
               <option value="dozer">Unit Dozer</option>
@@ -876,7 +853,7 @@ const Reports = () => {
             <select
               value={filters.vehicle_id}
               onChange={(e) => setFilters({ ...filters, vehicle_id: e.target.value })}
-              className="w-full px-2.5 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
+              className="w-full px-2.5 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#1E4B8E]/20 focus:border-[#1E4B8E] transition-all focus:outline-none"
             >
               <option value="">Semua Kendaraan</option>
               {vehicles.map((v) => (
@@ -891,25 +868,25 @@ const Reports = () => {
 
       {/* Rekap Statistik KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Total Inspeksi Terlaksana</span>
           <p className="text-2xl font-bold text-[#1E4B8E] mt-1 font-mono">{reportsData?.total_inspections || 0}</p>
           <span className="text-[10px] text-gray-400">Sesuai filter terpilih</span>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Kondisi Bagus</span>
           <p className="text-2xl font-bold text-[#16A34A] mt-1 font-mono">{reportsData?.total_good || 0}</p>
           <span className="text-[10px] text-gray-400">Item checklist laik pakai</span>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Kondisi Rusak</span>
           <p className="text-2xl font-bold text-[#DC2626] mt-1 font-mono">{reportsData?.total_broken || 0}</p>
           <span className="text-[10px] text-gray-400">Memerlukan service / ganti</span>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
           <span className="text-[11px] font-medium text-gray-500 uppercase">Item Tidak Tersedia (N/A)</span>
           <p className="text-2xl font-bold text-gray-600 mt-1 font-mono">{reportsData?.total_na || 0}</p>
           <span className="text-[10px] text-gray-400">Bukan fitur unit terkait</span>
@@ -918,7 +895,7 @@ const Reports = () => {
 
       {/* Top 5 Item Paling Sering Rusak */}
       {reportsData?.top_broken_items && reportsData.top_broken_items.length > 0 && (
-        <div className="bg-white rounded-xl p-5 border border-[#E5E7EB] shadow-sm">
+        <div className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-[#E5E7EB] dark:border-gray-800 shadow-sm">
           <h3 className="text-xs font-bold uppercase tracking-wider text-red-800 mb-3 flex items-center space-x-1.5">
             <WarningIcon className="w-4 h-4 text-red-600" />
             <span>5 Item Checklist Paling Sering Dilaporkan Rusak</span>
@@ -936,12 +913,12 @@ const Reports = () => {
       )}
 
       {/* Tabel Data Rekap & Cetak Hardfile */}
-      <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
-        <div className="p-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200/80 dark:border-gray-800 shadow-xs overflow-hidden">
+        <div className="p-4 bg-gray-50 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
           <h3 className="font-bold text-xs uppercase tracking-wider text-[#1A1A2E]">
             Daftar Formulir Siap Cetak Fisik
           </h3>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             Klik ikon cetak untuk preview format kertas fisik PT. BESMINDO
           </span>
         </div>
@@ -949,34 +926,34 @@ const Reports = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-gray-50 text-[#6B7280] font-semibold border-b border-gray-200">
-                <th className="py-3 px-4">Tanggal & Jam</th>
-                <th className="py-3 px-4">No. Kendaraan</th>
-                <th className="py-3 px-4">Jenis Formulir</th>
-                <th className="py-3 px-4">Operator</th>
-                <th className="py-3 px-4">Shift</th>
-                <th className="py-3 px-4">Kondisi</th>
-                <th className="py-3 px-4">Status Review</th>
+              <tr className="bg-gray-50 text-[#6B7280] font-semibold border-b border-gray-200 dark:border-gray-700">
+                <th className="py-3.5 px-5">Tanggal & Jam</th>
+                <th className="py-3.5 px-5">No. Kendaraan</th>
+                <th className="py-3.5 px-5">Jenis Formulir</th>
+                <th className="py-3.5 px-5">Operator</th>
+                <th className="py-3.5 px-5">Shift</th>
+                <th className="py-3.5 px-5">Kondisi</th>
+                <th className="py-3.5 px-5">Status Review</th>
                 <th className="py-3 px-4 text-center">Aksi Cetak</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
               {loading ? (
                 <tr>
-                  <td colSpan="8" className="py-10 text-center text-gray-500">
+                  <td colSpan="8" className="py-10 text-center text-gray-500 dark:text-gray-400">
                     Memuat data laporan...
                   </td>
                 </tr>
               ) : !reportsData?.inspections || reportsData.inspections.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="py-10 text-center text-gray-500">
+                  <td colSpan="8" className="py-10 text-center text-gray-500 dark:text-gray-400">
                     Tidak ada data inspeksi yang sesuai.
                   </td>
                 </tr>
               ) : (
                 reportsData.inspections.map((item) => (
-                  <tr key={item.id} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-3 px-4">
+                  <tr key={item.id} className="hover:bg-slate-50/80 dark:hover:bg-gray-800/50 transition-colors">
+                    <td className="py-3.5 px-5">
                       <div className="flex flex-col">
                         <span className="font-bold text-gray-800 text-[11px]">
                           {item.inspection_date
@@ -991,30 +968,30 @@ const Reports = () => {
                     <td className="py-3 px-4 font-bold text-[#1E4B8E]">{item.vehicle_number}</td>
                     <td className="py-3 px-4 text-gray-700">{item.form_name}</td>
                     <td className="py-3 px-4 text-gray-800">{item.operator_name}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <div className="flex flex-col gap-1">
                         <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold inline-block w-fit ${
                           item.shift === '1st'
                             ? 'bg-amber-100 text-amber-800 border border-amber-200'
                             : 'bg-indigo-100 text-indigo-800 border border-indigo-200'
                         }`}>
-                          {item.shift === '1st' ? '☀️ Pagi (1st)' : '🌙 Malam (2nd)'}
+                          {item.shift === '1st' ? 'Pagi (1st)' : 'Malam (2nd)'}
                         </span>
                         {item.hasMorningAndEvening && (
                           <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-gradient-to-r from-amber-500 to-indigo-500 text-white inline-block w-fit">
-                            ☀️🌙 Pagi & Malam
+                            Pagi & Malam
                           </span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       {item.broken_count > 0 ? (
                         <span className="text-red-600 font-bold">{item.broken_count} Rusak</span>
                       ) : (
                         <span className="text-green-600 font-bold">Bagus</span>
                       )}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       {item.acknowledged_by ? (
                         <span className="text-blue-700 font-medium">Disetujui</span>
                       ) : (
@@ -1041,9 +1018,9 @@ const Reports = () => {
       {/* Modal Cetak Hardfile */}
       {showPrintModal && selectedInspection && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
-              <h3 className="font-bold text-sm text-[#1A1A2E]">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between sticky top-0 bg-white z-10">
+              <h3 className="font-bold text-sm text-[#1A1A2E] dark:text-white">
                 Format Cetak Formulir Asli PT. BESMINDO (Siap Cetak Fisik)
               </h3>
               <div className="flex items-center space-x-2">

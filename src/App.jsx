@@ -15,6 +15,7 @@ import FormTypeManagement from './pages/admin/FormTypeManagement';
 import FormManagement from './pages/admin/FormManagement';
 import Reports from './pages/admin/Reports';
 import Settings from './pages/admin/Settings';
+import RepairTracking from './pages/admin/RepairTracking';
 
 // Admin Master Data Pages
 import VehicleModels from './pages/admin/master-data/VehicleModels';
@@ -66,6 +67,7 @@ function App() {
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="inspections" element={<InspectionList />} />
             <Route path="inspections/:id" element={<InspectionDetail />} />
+            <Route path="repair-tracking" element={<RepairTracking />} />
             <Route path="vehicles" element={<VehicleManagement />} />
             <Route path="form-types" element={<FormTypeManagement />} />
             <Route path="forms" element={<FormManagement />} />

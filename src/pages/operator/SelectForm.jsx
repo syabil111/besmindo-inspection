@@ -153,38 +153,24 @@ const SelectForm = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-2 sm:py-6">
-      {/* Container with smooth rounded-3xl and subtle shadow */}
-      <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden relative">
+    <div className="max-w-2xl mx-auto">
+      {/* Container Card Sederhana dengan Garis Aksen Biru */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 border-t-4 border-t-[#162F5C] overflow-hidden">
         
-        {/* Header with Elegant Curve & Waves */}
-        <div className="relative bg-gradient-to-r from-[#162F5C] via-[#1E4B8E] to-[#2A5BAD] text-white pt-7 pb-10 px-6 sm:px-8 overflow-hidden">
-          {/* Subtle Ambient Orbs */}
-          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full bg-blue-300/20 blur-2xl pointer-events-none" />
-          
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold tracking-wide text-blue-100 mb-2.5 backdrop-blur-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              SISTEM INSPEKSI RESMI
+        {/* Header Sederhana & Bersih (Putih dengan Aksen Garis Biru) */}
+        <div className="bg-white p-6 sm:p-7 border-b border-slate-200/80 relative">
+          {/* Garis Aksen Biru Halus di Bawah Header Card */}
+          <div className="absolute bottom-0 left-6 right-6 h-[2px] bg-gradient-to-r from-[#162F5C] via-blue-400 to-[#162F5C]/20 rounded-full" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-1.5 h-11 bg-[#162F5C] rounded-full shrink-0 shadow-xs" />
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#162F5C]">
+                Formulir Inspeksi Kendaraan & Alat
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Silakan isi nama Anda dan pilih unit kendaraan sebelum mengoperasikan armada.
+              </p>
             </div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-              Formulir Inspeksi Kendaraan & Alat
-            </h1>
-            <p className="text-xs sm:text-sm text-blue-100/90 mt-1 max-w-xl">
-              Silakan lengkapi identitas operator dan pilih armada sebelum mengoperasikan unit.
-            </p>
-          </div>
-
-          {/* Bottom Elegant Curve Wave Divider */}
-          <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
-            <svg
-              viewBox="0 0 1200 60"
-              preserveAspectRatio="none"
-              className="w-full h-6 sm:h-8 text-white fill-current"
-            >
-              <path d="M0,0 C300,55 900,55 1200,0 L1200,60 L0,60 Z" />
-            </svg>
           </div>
         </div>
 
@@ -220,7 +206,7 @@ const SelectForm = () => {
                 onChange={(e) => setFormData({ ...formData, operator_name: e.target.value })}
                 placeholder="Masukkan nama lengkap Anda..."
                 required
-                className="w-full px-4 py-3 bg-[#F7F6F2] border border-slate-300 rounded-2xl text-sm font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#1E4B8E]/25 focus:border-[#1E4B8E] focus:outline-none transition-all shadow-xs"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#1E4B8E]/25 focus:border-[#1E4B8E] focus:outline-none transition"
               />
             </div>
 
@@ -249,43 +235,41 @@ const SelectForm = () => {
             {/* Shift dan Tanggal */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Shift Kerja *</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Shift Kerja *</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, shift: '1st' })}
-                    className={`py-2.5 px-3 rounded-xl border text-xs sm:text-sm font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer ${
                       formData.shift === '1st'
-                        ? 'bg-[#1E4B8E] text-white border-[#1E4B8E] shadow-sm shadow-blue-900/25'
+                        ? 'bg-[#162F5C] text-white border-[#162F5C] shadow-xs'
                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <span>☀️</span>
                     <span>Pagi (1st)</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, shift: '2nd' })}
-                    className={`py-2.5 px-3 rounded-xl border text-xs sm:text-sm font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs sm:text-sm font-semibold transition cursor-pointer ${
                       formData.shift === '2nd'
-                        ? 'bg-[#1E4B8E] text-white border-[#1E4B8E] shadow-sm shadow-blue-900/25'
+                        ? 'bg-[#162F5C] text-white border-[#162F5C] shadow-xs'
                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <span>🌙</span>
                     <span>Malam (2nd)</span>
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Inspeksi *</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Tanggal Inspeksi *</label>
                 <input
                   type="date"
                   value={formData.inspection_date}
                   onChange={(e) => setFormData({ ...formData, inspection_date: e.target.value })}
                   required
-                  className="w-full px-4 py-2.5 bg-[#F7F6F2] border border-slate-300 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-[#1E4B8E]/25 focus:border-[#1E4B8E] focus:outline-none transition-all shadow-xs"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 focus:bg-white focus:ring-2 focus:ring-[#162F5C]/25 focus:border-[#162F5C] focus:outline-none transition"
                 />
               </div>
             </div>
@@ -294,11 +278,11 @@ const SelectForm = () => {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3.5 bg-gradient-to-r from-[#162F5C] via-[#1E4B8E] to-[#2A5BAD] hover:from-[#112347] hover:to-[#1E4B8E] text-white rounded-2xl font-bold text-sm sm:text-base shadow-lg shadow-blue-900/25 transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 bg-[#162F5C] hover:bg-[#112447] active:bg-[#0c1a33] text-white rounded-lg font-semibold text-sm shadow transition duration-150 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Lanjutkan ke Pengisian Formulir</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
             </div>

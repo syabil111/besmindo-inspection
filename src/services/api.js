@@ -96,6 +96,10 @@ export const adminAPI = {
 
   // Reports
   getReports: (params) => api.get('/admin/reports', { params }),
+
+  // Repair Tracking
+  updateRepairStatus: (resultId, data) => api.put(`/admin/inspection-results/${resultId}/repair-status`, data),
+  getBrokenItems: (params) => api.get('/admin/broken-items', { params }),
 };
 
 // Master Data APIs (Admin only)

@@ -714,7 +714,7 @@ const FillForm = () => {
           {/* Special Safety Note for Dozer */}
           {formType === 'dozer' && (
             <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl text-xs sm:text-sm text-amber-900 font-semibold shadow-xs">
-              ⚠️ <strong>Peringatan Khusus HSE:</strong> Pastikan Wire Winch and Tail Chain/Hock tidak ada yang rusak & Terpasang dengan benar.
+              <strong>Peringatan Khusus HSE:</strong> Pastikan Wire Winch and Tail Chain/Hock tidak ada yang rusak & Terpasang dengan benar.
             </div>
           )}
 

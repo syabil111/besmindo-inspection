@@ -1077,4 +1077,147 @@ router.get('/reports', async (req, res) => {
   }
 });
 
+// =================================================================
+// 7. REPAIR TRACKING
+// =================================================================
+
+// Update repair status for broken item
+router.put('/inspection-results/:id/repair-status', async (req, res) => {
+  const { id } = req.params;
+  const { repair_status, repair_notes } = req.body;
+  const adminId = req.user.id;
+
+  try {
+    // Validate repair_status
+    const validStatuses = ['pending', 'in_progress', 'repaired'];
+    if (!validStatuses.includes(repair_status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Status perbaikan tidak valid. Gunakan: pending, in_progress, atau repaired.'
+      });
+    }
+
+    // Check if result exists and is broken
+    const checkResult = await pool.query(
+      `SELECT id, condition FROM inspection_results WHERE id = $1`,
+      [id]
+    );
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item inspeksi tidak ditemukan.'
+      });
+    }
+
+    if (checkResult.rows[0].condition !== 'broken') {
+      return res.status(400).json({
+        success: false,
+        message: 'Hanya item rusak yang bisa diupdate status perbaikannya.'
+      });
+    }
+
+    // Update repair status
+    const updateQuery = repair_status === 'repaired' 
+      ? `UPDATE inspection_results 
+         SET repair_status = $1, 
+             repair_notes = $2, 
+             repaired_at = NOW(), 
+             repaired_by = $3 
+         WHERE id = $4 
+         RETURNING *`
+      : `UPDATE inspection_results 
+         SET repair_status = $1, 
+             repair_notes = $2 
+         WHERE id = $3 
+         RETURNING *`;
+
+    const updateParams = repair_status === 'repaired'
+      ? [repair_status, repair_notes || null, adminId, id]
+      : [repair_status, repair_notes || null, id];
+
+    const result = await pool.query(updateQuery, updateParams);
+
+    res.json({
+      success: true,
+      message: `Status perbaikan berhasil diupdate menjadi: ${repair_status}`,
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Update repair status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengupdate status perbaikan.'
+    });
+  }
+});
+
+// Get broken items with repair status
+router.get('/broken-items', async (req, res) => {
+  const { repair_status, date_from, date_to } = req.query;
+
+  try {
+    let query = `
+      SELECT 
+        ir.id,
+        ir.condition,
+        ir.notes,
+        ir.repair_status,
+        ir.repair_notes,
+        ir.repaired_at,
+        ci.item_description,
+        i.id as inspection_id,
+        i.inspection_date,
+        i.shift,
+        v.vehicle_number,
+        v.vehicle_type,
+        u.name as operator_name,
+        admin_u.name as repaired_by_name
+      FROM inspection_results ir
+      JOIN inspections i ON ir.inspection_id = i.id
+      JOIN vehicles v ON i.vehicle_id = v.id
+      JOIN users u ON i.operator_id = u.id
+      JOIN checklist_items ci ON ir.checklist_item_id = ci.id
+      LEFT JOIN users admin_u ON ir.repaired_by = admin_u.id
+      WHERE ir.condition = 'broken'
+    `;
+
+    const params = [];
+
+    if (repair_status) {
+      params.push(repair_status);
+      query += ` AND ir.repair_status = $${params.length}`;
+    }
+
+    if (date_from) {
+      params.push(date_from);
+      query += ` AND i.inspection_date >= $${params.length}`;
+    }
+
+    if (date_to) {
+      params.push(date_to);
+      query += ` AND i.inspection_date <= $${params.length}`;
+    }
+
+    query += ` ORDER BY i.inspection_date DESC, ir.repair_status ASC`;
+
+    const result = await pool.query(query, params);
+
+    res.json({
+      success: true,
+      data: result.rows
+    });
+  } catch (error) {
+    console.error('Get broken items error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengambil data item rusak.'
+    });
+  }
+});
+
 export default router;
+
+
+
+
